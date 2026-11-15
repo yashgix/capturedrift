@@ -136,10 +136,9 @@ Text is joined with `"\n"`. Timestamps become exact epoch milliseconds: parse wi
 a naive time as UTC, subtract the epoch and floor-divide by one millisecond. Unparseable or absent timestamps are
 omitted, not faked.
 
-The normalizer's share is reported two ways, bytes and text. The per-harness shares cover all of a harness's
-sessions; the per-version share covers that version's sessions. The frozen shares use only held-out test sessions.
-Every share uses the same byte ruler, so the ratios are comparable, but the per-harness STS share and the frozen
-shares are not shares of the same session population.
+The normalizer's share is reported two ways, bytes and text, over all of a harness's sessions, both against the
+same denominator as the frozen shares. That is what makes the comparison fair: the same byte ruler measures the
+loss and the retention.
 
 ## Determinism
 

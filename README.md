@@ -3,19 +3,17 @@
 Milestone 1: a structure-only measurement of what a coding-agent session parser, frozen at one CLI version, keeps
 and silently drops on the versions that come after it.
 
-The hypothesis this milestone tests is that an importer written against one CLI version keeps running on later
-versions while silently ignoring whatever arrives in shapes it has never seen. If that holds, nothing fails: no
-exception, no dropped-file warning, no log line; the unknown keys are simply never read. capturedrift measures the
-structural part of that gap on real public Claude Code and Codex session files that span many CLI versions. It
-measures key visibility under an assumed frozen parser and does not run historical importers.
+An importer written against one CLI version keeps running on later versions — it just stops recognising whatever
+arrives in shapes it has never seen. Nothing fails: no exception, no dropped-file warning, no log line. The unknown
+keys are simply never read. capturedrift puts a number on that, on real public Claude Code and Codex session files
+that span many CLI versions.
 
 ## The question
 
-A capture product stores raw sessions first and normalizes them later, so the raw log is safe. The risk is in the
-importer in front of it: it encodes one version's field layout, and later versions may keep the old fields while
-adding new ones. This milestone measures, version by version, the gap between what the raw session contains and
-what such a frozen parser can see. It is a measurement under an assumed parser model, not a claim about any
-particular product's code or runtime behaviour.
+A capture product stores raw sessions first and normalizes them later, so the raw log is safe. The importer in
+front of it is not: it encodes one version's field layout, and later versions keep the old fields while adding new
+ones. This milestone measures, version by version, the gap between what the raw session contains and what such a
+frozen parser can see. It is a measurement, not a claim about any particular product's code.
 
 ## What this measures
 

@@ -203,27 +203,13 @@ class MainTest(unittest.TestCase):
     def test_missing_markers_fail(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            data = root / "data"
-            data.mkdir()
-            write_data(data)
             results = root / "results"
             results.mkdir()
-            (results / "metrics.json").write_text(json.dumps(summarize(fixture(), 4, 1000)), encoding="utf-8")
+            (results / "metrics.json").write_text(json.dumps(METRICS), encoding="utf-8")
             template = root / "README.md"
             template.write_text("# title only\n", encoding="utf-8")
             with self.assertRaises(ValueError):
-                main(
-                    [
-                        "--readme",
-                        str(template),
-                        "--out",
-                        str(root / "out.md"),
-                        "--results",
-                        str(results),
-                        "--data",
-                        str(data),
-                    ]
-                )
+                main(["--readme", str(template), "--out", str(root / "out.md"), "--results", str(results)])
 
 
 if __name__ == "__main__":
