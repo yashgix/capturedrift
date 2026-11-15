@@ -1,0 +1,17 @@
+[project]
+name = "capturedrift"
+version = "0.1.0"
+description = "What a coding-agent session parser frozen at one CLI version silently misses later, on public Claude Code and Codex traces"
+requires-python = ">=3.14"
+dependencies = []
+
+[tool.ruff]
+line-length = 120
+target-version = "py314"
+extend-exclude = ["data"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["capturedrift"]
