@@ -80,6 +80,11 @@ class ClaudeTest(unittest.TestCase):
         record = {"type": "user", "message": {"content": "one two three"}}
         self.assertEqual(normalize("claude", [record])[1]["message"], {"role": "user", "content": "one two three"})
 
+    def test_thinking_is_read_from_its_own_field(self):
+        blocks = [{"type": "thinking", "thinking": "deep", "text": "wrong"}, {"type": "text", "text": "a"}]
+        message = normalize("claude", [{"type": "assistant", "message": {"content": blocks}}])[1]["message"]
+        self.assertEqual(message["reasoningContent"], "deep")
+
     def test_assistant_maps_text_thinking_tools_and_model(self):
         record = {
             "type": "assistant",
