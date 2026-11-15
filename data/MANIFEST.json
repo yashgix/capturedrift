@@ -1,0 +1,785 @@
+{
+ "fetched": "2026-11-14",
+ "note": "Public, ungated Hugging Face agent-session datasets, each under the license its card states (copies in licenses/, cards in sources/). Files are byte copies of the upstream sessions at the pinned revision, except that tools/fetch_data.py replaces personal home-directory names, email addresses, token-shaped strings and credential-shaped text (counts per file under redactions; cards under card_redactions).",
+ "selection": "Raw Claude Code and Codex session files only (no converted, synthetic or re-wrapped exports; gated datasets excluded). Per (harness, CLI version as recorded in the file), the two sessions with the earliest first timestamp among files of at most 8 MB, ties by dataset then path. Fable copies use the original upload (armand0e).",
+ "sources": {
+  "AlinCiocan__fable-5-claude-code-traces": {
+   "dataset": "AlinCiocan/fable-5-claude-code-traces",
+   "revision": "e33ebbca230ae258b2c28aeee9fe3429e7fbeab6",
+   "license": "CC-BY-4.0",
+   "card": "sources/AlinCiocan__fable-5-claude-code-traces.md",
+   "url": "https://huggingface.co/datasets/AlinCiocan/fable-5-claude-code-traces",
+   "card_redactions": 0
+  },
+  "armand0e__claude-fable-5-claude-code": {
+   "dataset": "armand0e/claude-fable-5-claude-code",
+   "revision": "7388ef96f3179f23b6b3618b96572f1aa9b84510",
+   "license": "MIT",
+   "card": "sources/armand0e__claude-fable-5-claude-code.md",
+   "url": "https://huggingface.co/datasets/armand0e/claude-fable-5-claude-code",
+   "card_redactions": 0
+  },
+  "build-small-hackathon__lost-found-desk-codex-traces": {
+   "dataset": "build-small-hackathon/lost-found-desk-codex-traces",
+   "revision": "939ce900603d1a08e82c4609386b281454fb5dbf",
+   "license": "MIT",
+   "card": "sources/build-small-hackathon__lost-found-desk-codex-traces.md",
+   "url": "https://huggingface.co/datasets/build-small-hackathon/lost-found-desk-codex-traces",
+   "card_redactions": 1
+  },
+  "davanstrien__agent-race-traces": {
+   "dataset": "davanstrien/agent-race-traces",
+   "revision": "4a8ac15d62c37aad4402c8f2021a2cef074c3806",
+   "license": "CC-BY-4.0",
+   "card": "sources/davanstrien__agent-race-traces.md",
+   "url": "https://huggingface.co/datasets/davanstrien/agent-race-traces",
+   "card_redactions": 0
+  },
+  "kaupane__AstroAgentBench-Traces": {
+   "dataset": "kaupane/AstroAgentBench-Traces",
+   "revision": "cff96a3f9b27175f24ba3cd46f607a26c259f0f5",
+   "license": "CC-BY-4.0",
+   "card": "sources/kaupane__AstroAgentBench-Traces.md",
+   "url": "https://huggingface.co/datasets/kaupane/AstroAgentBench-Traces",
+   "card_redactions": 0
+  },
+  "naazimsnh02__tutordesk-agent-traces": {
+   "dataset": "naazimsnh02/tutordesk-agent-traces",
+   "revision": "4d538090ddd302ff632f53645db5cd606dd94c0b",
+   "license": "MIT",
+   "card": "sources/naazimsnh02__tutordesk-agent-traces.md",
+   "url": "https://huggingface.co/datasets/naazimsnh02/tutordesk-agent-traces",
+   "card_redactions": 0
+  },
+  "nielsr__r3al-vit-quantization-codex-trace": {
+   "dataset": "nielsr/r3al-vit-quantization-codex-trace",
+   "revision": "364ab50da7fc81f9789b4ea84be5d83c712cd3b6",
+   "license": "MIT",
+   "card": "sources/nielsr__r3al-vit-quantization-codex-trace.md",
+   "url": "https://huggingface.co/datasets/nielsr/r3al-vit-quantization-codex-trace",
+   "card_redactions": 0
+  },
+  "thomwolf__am-session-claude-code-1-c3cc0a": {
+   "dataset": "thomwolf/am-session-claude-code-1-c3cc0a",
+   "revision": "037d661cb58d4785f9523205350143d8b9af6a7d",
+   "license": "Apache-2.0",
+   "card": "sources/thomwolf__am-session-claude-code-1-c3cc0a.md",
+   "url": "https://huggingface.co/datasets/thomwolf/am-session-claude-code-1-c3cc0a",
+   "card_redactions": 0
+  },
+  "thomwolf__am-session-codex-check-d17941": {
+   "dataset": "thomwolf/am-session-codex-check-d17941",
+   "revision": "d89ae23edfef573e3038c82f7c4271c8802fa04b",
+   "license": "Apache-2.0",
+   "card": "sources/thomwolf__am-session-codex-check-d17941.md",
+   "url": "https://huggingface.co/datasets/thomwolf/am-session-codex-check-d17941",
+   "card_redactions": 0
+  },
+  "thomwolf__am-session-sharing-design": {
+   "dataset": "thomwolf/am-session-sharing-design",
+   "revision": "36dd5850a4f05de14f99fb7c9aa6c42203513bf1",
+   "license": "Apache-2.0",
+   "card": "sources/thomwolf__am-session-sharing-design.md",
+   "url": "https://huggingface.co/datasets/thomwolf/am-session-sharing-design",
+   "card_redactions": 0
+  },
+  "trace-commons__agent-traces": {
+   "dataset": "trace-commons/agent-traces",
+   "revision": "112ebd4d03ce852b00e935d523107c3d0c9a65bf",
+   "license": "CC-BY-4.0",
+   "card": "sources/trace-commons__agent-traces.md",
+   "url": "https://huggingface.co/datasets/trace-commons/agent-traces",
+   "card_redactions": 0
+  },
+  "yellowbeeblackbee__claude-traces": {
+   "dataset": "yellowbeeblackbee/claude-traces",
+   "revision": "0cad5c49dfb886c77b1636d24c46b691969585b8",
+   "license": "CC0-1.0",
+   "card": "sources/yellowbeeblackbee__claude-traces.md",
+   "url": "https://huggingface.co/datasets/yellowbeeblackbee/claude-traces",
+   "card_redactions": 0
+  }
+ },
+ "files": {
+  "sessions/claude/AlinCiocan__fable-5-claude-code-traces/b8b9ad57-db35-44af-a88c-27d428c9af4a.jsonl": {
+   "harness": "claude",
+   "version": "2.1.172",
+   "source": "AlinCiocan__fable-5-claude-code-traces",
+   "upstream_path": "b8b9ad57-db35-44af-a88c-27d428c9af4a.jsonl",
+   "upstream_sha256": "31e0a15236c2d02fc4de09f37d3f4ebcc128da251f7b2bad3e58c2b92313f24d",
+   "upstream_bytes": 206236,
+   "sha256": "31e0a15236c2d02fc4de09f37d3f4ebcc128da251f7b2bad3e58c2b92313f24d",
+   "bytes": 206236,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/AlinCiocan__fable-5-claude-code-traces/c0c96318-227f-440f-a120-becb155d2194.jsonl": {
+   "harness": "claude",
+   "version": "2.1.172",
+   "source": "AlinCiocan__fable-5-claude-code-traces",
+   "upstream_path": "c0c96318-227f-440f-a120-becb155d2194.jsonl",
+   "upstream_sha256": "3c77830a20e079957eac9d685731d5123ec932432d28954ddec292ba2248233a",
+   "upstream_bytes": 24465,
+   "sha256": "3c77830a20e079957eac9d685731d5123ec932432d28954ddec292ba2248233a",
+   "bytes": 24465,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/AlinCiocan__fable-5-claude-code-traces/c51d2ee8-4c61-414f-a5bc-36d210ab1667.jsonl": {
+   "harness": "claude",
+   "version": "2.1.169",
+   "source": "AlinCiocan__fable-5-claude-code-traces",
+   "upstream_path": "c51d2ee8-4c61-414f-a5bc-36d210ab1667.jsonl",
+   "upstream_sha256": "1dd19a507bcb2b03cb9d2c710ada3a5bdfaf3e12715847e4be50b6f494050e5a",
+   "upstream_bytes": 865711,
+   "sha256": "1dd19a507bcb2b03cb9d2c710ada3a5bdfaf3e12715847e4be50b6f494050e5a",
+   "bytes": 865711,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/AlinCiocan__fable-5-claude-code-traces/effd1989-fe68-4223-b938-bff80d1181d2.jsonl": {
+   "harness": "claude",
+   "version": "2.1.176",
+   "source": "AlinCiocan__fable-5-claude-code-traces",
+   "upstream_path": "effd1989-fe68-4223-b938-bff80d1181d2.jsonl",
+   "upstream_sha256": "a5381f3a23ff98ee033af9d6fcd0a07cb06af2935777d838a26a2b5a55562a4d",
+   "upstream_bytes": 1173632,
+   "sha256": "a5381f3a23ff98ee033af9d6fcd0a07cb06af2935777d838a26a2b5a55562a4d",
+   "bytes": 1173632,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/armand0e__claude-fable-5-claude-code/1afc3cc3-792e-49a2-83c4-19ddb66ba008.jsonl": {
+   "harness": "claude",
+   "version": "2.1.175",
+   "source": "armand0e__claude-fable-5-claude-code",
+   "upstream_path": "1afc3cc3-792e-49a2-83c4-19ddb66ba008.jsonl",
+   "upstream_sha256": "872682af4030bfd337d1c846b40080501d5e1f054176fd959e577fc5d1f161e6",
+   "upstream_bytes": 1262131,
+   "sha256": "872682af4030bfd337d1c846b40080501d5e1f054176fd959e577fc5d1f161e6",
+   "bytes": 1262131,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/armand0e__claude-fable-5-claude-code/4b456a37-0524-420a-a4a1-67db0efa4881.jsonl": {
+   "harness": "claude",
+   "version": "2.1.174",
+   "source": "armand0e__claude-fable-5-claude-code",
+   "upstream_path": "4b456a37-0524-420a-a4a1-67db0efa4881.jsonl",
+   "upstream_sha256": "7413d5838abfb01ea2b3e7cf386bf1ca667cfe651df16a5d63cf1663ef440ae6",
+   "upstream_bytes": 172294,
+   "sha256": "7413d5838abfb01ea2b3e7cf386bf1ca667cfe651df16a5d63cf1663ef440ae6",
+   "bytes": 172294,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/armand0e__claude-fable-5-claude-code/5c0d7bef-0751-49d2-b55e-72fd00abedd2.jsonl": {
+   "harness": "claude",
+   "version": "2.1.174",
+   "source": "armand0e__claude-fable-5-claude-code",
+   "upstream_path": "5c0d7bef-0751-49d2-b55e-72fd00abedd2.jsonl",
+   "upstream_sha256": "3aad233e0d26e717d605daeb47e5639342419810e9a78de62aabd042168f4729",
+   "upstream_bytes": 67114,
+   "sha256": "65efce1502a9f66cc814b6b808cdf46cb21efea9d48a7b5c9c4850d2bfff86f1",
+   "bytes": 67102,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 2
+   }
+  },
+  "sessions/claude/armand0e__claude-fable-5-claude-code/d9c29410-80a6-4e34-aab1-0c7e5bb7110f.jsonl": {
+   "harness": "claude",
+   "version": "2.1.175",
+   "source": "armand0e__claude-fable-5-claude-code",
+   "upstream_path": "d9c29410-80a6-4e34-aab1-0c7e5bb7110f.jsonl",
+   "upstream_sha256": "d7ad0daa490fa3973dc42d16317e92993a7a126494f21b22ac617be69f0def22",
+   "upstream_bytes": 1341098,
+   "sha256": "d7ad0daa490fa3973dc42d16317e92993a7a126494f21b22ac617be69f0def22",
+   "bytes": 1341098,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/armand0e__claude-fable-5-claude-code/f8b99555-306c-482a-923f-395b40aadff3.jsonl": {
+   "harness": "claude",
+   "version": "2.1.176",
+   "source": "armand0e__claude-fable-5-claude-code",
+   "upstream_path": "f8b99555-306c-482a-923f-395b40aadff3.jsonl",
+   "upstream_sha256": "f1ce7c966d386068ddab18659670fc24401f7093f700ad5c644b4732ac6c965d",
+   "upstream_bytes": 410256,
+   "sha256": "f1ce7c966d386068ddab18659670fc24401f7093f700ad5c644b4732ac6c965d",
+   "bytes": 410256,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/davanstrien__agent-race-traces/claude-code.jsonl": {
+   "harness": "claude",
+   "version": "2.1.126",
+   "source": "davanstrien__agent-race-traces",
+   "upstream_path": "claude-code.jsonl",
+   "upstream_sha256": "42014674c6dcdbda39fbc42b203e2d1c257c62c9ca2a74fd0bd9a0725db912a3",
+   "upstream_bytes": 327550,
+   "sha256": "e3344974cb08e78aa20f48ab3789b1148691bd27cba0ed0dc2e350e251b6580d",
+   "bytes": 326412,
+   "redactions": {
+    "home": 158,
+    "encoded_home": 4,
+    "email": 0,
+    "token": 0,
+    "secret": 2
+   }
+  },
+  "sessions/claude/kaupane__AstroAgentBench-Traces/14052df0-9245-4610-b326-d31e642571e8.jsonl": {
+   "harness": "claude",
+   "version": "2.1.123",
+   "source": "kaupane__AstroAgentBench-Traces",
+   "upstream_path": "sessions/agent_runs/experiments/claude_code_dpsk_comparison/test/W20_2018/session_logs/projects/-app-workspace/14052df0-9245-4610-b326-d31e642571e8.jsonl",
+   "upstream_sha256": "f3a8b270bdb3e2d08e0b7a75ae9e247488eeff03557aea33eaf081bd9b986f46",
+   "upstream_bytes": 1455334,
+   "sha256": "f3a8b270bdb3e2d08e0b7a75ae9e247488eeff03557aea33eaf081bd9b986f46",
+   "bytes": 1455334,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/kaupane__AstroAgentBench-Traces/d81429ac-e8ed-4546-884e-1ae81b60428b.jsonl": {
+   "harness": "claude",
+   "version": "2.1.114",
+   "source": "kaupane__AstroAgentBench-Traces",
+   "upstream_path": "sessions/agent_runs/experiments/main_agentic/matrix/stereo_imaging/claude_code/test/case_0003/session_logs/projects/-app-workspace/d81429ac-e8ed-4546-884e-1ae81b60428b.jsonl",
+   "upstream_sha256": "67d594cd4676f19615684acd62c5cb32f2296a2de8074af810dd0c62c8a2d3f5",
+   "upstream_bytes": 2689088,
+   "sha256": "67d594cd4676f19615684acd62c5cb32f2296a2de8074af810dd0c62c8a2d3f5",
+   "bytes": 2689088,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/kaupane__AstroAgentBench-Traces/ddeaa29a-b349-4576-9c8d-b7161588ea2d.jsonl": {
+   "harness": "claude",
+   "version": "2.1.123",
+   "source": "kaupane__AstroAgentBench-Traces",
+   "upstream_path": "sessions/agent_runs/experiments/claude_code_dpsk_comparison/test/W50_2018/session_logs/projects/-app-workspace/ddeaa29a-b349-4576-9c8d-b7161588ea2d.jsonl",
+   "upstream_sha256": "2af02aa501e0da104bd36c1246a20cb442963a248863ec1e9ffd0bc52f08389b",
+   "upstream_bytes": 788059,
+   "sha256": "2af02aa501e0da104bd36c1246a20cb442963a248863ec1e9ffd0bc52f08389b",
+   "bytes": 788059,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/kaupane__AstroAgentBench-Traces/dfdbba1f-a000-406e-93a3-cb6a269ebb2f.jsonl": {
+   "harness": "claude",
+   "version": "2.1.114",
+   "source": "kaupane__AstroAgentBench-Traces",
+   "upstream_path": "sessions/agent_runs/experiments/main_agentic/matrix/stereo_imaging/claude_code/test/case_0002/session_logs/projects/-app-workspace/dfdbba1f-a000-406e-93a3-cb6a269ebb2f.jsonl",
+   "upstream_sha256": "4902cbaa9a32f3b6514e21071686bd93e0526c76c7dcb2949126f5fcb9f765bb",
+   "upstream_bytes": 467216,
+   "sha256": "4902cbaa9a32f3b6514e21071686bd93e0526c76c7dcb2949126f5fcb9f765bb",
+   "bytes": 467216,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/naazimsnh02__tutordesk-agent-traces/3040fd6d-2270-4377-8fbd-7f5cccac3e82.jsonl": {
+   "harness": "claude",
+   "version": "2.1.177",
+   "source": "naazimsnh02__tutordesk-agent-traces",
+   "upstream_path": "build_sessions/3040fd6d-2270-4377-8fbd-7f5cccac3e82.jsonl",
+   "upstream_sha256": "330ae4545a14b78d0c7e74cb685f8dc1e5731e98332d64ec2008bc89814617d2",
+   "upstream_bytes": 1416826,
+   "sha256": "269efa97f94f78f5667c88046c884c3bd46e88f49f0e71ab6dae9a0e42e3bc16",
+   "bytes": 1416527,
+   "redactions": {
+    "home": 18,
+    "encoded_home": 1,
+    "email": 12,
+    "token": 0,
+    "secret": 25
+   }
+  },
+  "sessions/claude/naazimsnh02__tutordesk-agent-traces/37fc77e2-8af1-428a-baba-7b7841a0e675.jsonl": {
+   "harness": "claude",
+   "version": "2.1.177",
+   "source": "naazimsnh02__tutordesk-agent-traces",
+   "upstream_path": "build_sessions/37fc77e2-8af1-428a-baba-7b7841a0e675.jsonl",
+   "upstream_sha256": "b5ce32f83cf8e05cb57a5b6e3f2abb1a6b418147966ad95ec10f13adcc05be6f",
+   "upstream_bytes": 508678,
+   "sha256": "d734177998869b007fc43256bb7786ca71551e8c40bef622f6b2d7c916dff6e7",
+   "bytes": 508672,
+   "redactions": {
+    "home": 6,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/naazimsnh02__tutordesk-agent-traces/6c6995b6-feea-424f-a8e5-6a47255da166.jsonl": {
+   "harness": "claude",
+   "version": "2.1.173",
+   "source": "naazimsnh02__tutordesk-agent-traces",
+   "upstream_path": "build_sessions/6c6995b6-feea-424f-a8e5-6a47255da166.jsonl",
+   "upstream_sha256": "935a10d737ff436544c21715969d30345a2d56334b343bf202894f1ec466a485",
+   "upstream_bytes": 994851,
+   "sha256": "f5293320e9d8c5352fdcfe5598284653dd155af4cc9ccf5ba0ea0ebbc2df89b3",
+   "bytes": 994931,
+   "redactions": {
+    "home": 6,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 30
+   }
+  },
+  "sessions/claude/naazimsnh02__tutordesk-agent-traces/a90ed8a8-b0ab-4011-bf19-c3cfeb38f7f6.jsonl": {
+   "harness": "claude",
+   "version": "2.1.173",
+   "source": "naazimsnh02__tutordesk-agent-traces",
+   "upstream_path": "build_sessions/a90ed8a8-b0ab-4011-bf19-c3cfeb38f7f6.jsonl",
+   "upstream_sha256": "f10c0c52bb841fa5b306859ee263a58a2a0081b55c09fb8af49c8a8b54b3163c",
+   "upstream_bytes": 458758,
+   "sha256": "f65be563c585e466dc646f6c9290c580fb6b1c9dca442e8bc27d4409bd967753",
+   "bytes": 458750,
+   "redactions": {
+    "home": 8,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/thomwolf__am-session-claude-code-1-c3cc0a/c3cc0a1c-7826-48a6-8c7b-a0b811496e16.jsonl": {
+   "harness": "claude",
+   "version": "2.1.220",
+   "source": "thomwolf__am-session-claude-code-1-c3cc0a",
+   "upstream_path": "c3cc0a1c-7826-48a6-8c7b-a0b811496e16.jsonl",
+   "upstream_sha256": "4a50d5f39363ae6073a72f25b6790c796a69cb4b52f7ab134b418db15423127f",
+   "upstream_bytes": 19402,
+   "sha256": "4a50d5f39363ae6073a72f25b6790c796a69cb4b52f7ab134b418db15423127f",
+   "bytes": 19402,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/thomwolf__am-session-sharing-design/edbfc11f-0e1f-4537-aa47-b269d416fec6.jsonl": {
+   "harness": "claude",
+   "version": "2.1.220",
+   "source": "thomwolf__am-session-sharing-design",
+   "upstream_path": "edbfc11f-0e1f-4537-aa47-b269d416fec6.jsonl",
+   "upstream_sha256": "f5371ea5003e9526dd6d5eefb8f3246084e84304d2829c2afb585da8fe565652",
+   "upstream_bytes": 1864041,
+   "sha256": "544dc092a1e803db19e16c3d2a37bfacfe7f02df5ee31da2523a17a993a3cfd3",
+   "bytes": 1863990,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 18,
+    "email": 0,
+    "token": 0,
+    "secret": 1
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/11ef2190-67e2-4707-8212-ab12ebffdbc2.jsonl": {
+   "harness": "claude",
+   "version": "2.1.159",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/11ef2190-67e2-4707-8212-ab12ebffdbc2.jsonl",
+   "upstream_sha256": "98a1ff2f95f84fac563e6e55689a7fbb7eb9a6e1e19598dd8dffa54f3332d1b1",
+   "upstream_bytes": 132969,
+   "sha256": "98a1ff2f95f84fac563e6e55689a7fbb7eb9a6e1e19598dd8dffa54f3332d1b1",
+   "bytes": 132969,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/17c2cf98-e64a-43c6-932e-fa7efcade358.jsonl": {
+   "harness": "claude",
+   "version": "2.1.131",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/17c2cf98-e64a-43c6-932e-fa7efcade358.jsonl",
+   "upstream_sha256": "8e0e53bff1924520fba62fb6b34c66bfea877c6690d718d1997ac8ecd27834a2",
+   "upstream_bytes": 2902788,
+   "sha256": "8e0e53bff1924520fba62fb6b34c66bfea877c6690d718d1997ac8ecd27834a2",
+   "bytes": 2902788,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/39082932-131c-40a9-872d-1d3ac8ed1fd6.jsonl": {
+   "harness": "claude",
+   "version": "2.1.145",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/39082932-131c-40a9-872d-1d3ac8ed1fd6.jsonl",
+   "upstream_sha256": "3f6126a16ab30d0ed5a28682dc60c4ac08141dc5c2fd76216170e72faac910c1",
+   "upstream_bytes": 4155633,
+   "sha256": "3f6126a16ab30d0ed5a28682dc60c4ac08141dc5c2fd76216170e72faac910c1",
+   "bytes": 4155633,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/4222016d-1932-4abb-94b3-463203bd8876.jsonl": {
+   "harness": "claude",
+   "version": "2.1.168",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/4222016d-1932-4abb-94b3-463203bd8876.jsonl",
+   "upstream_sha256": "851d25e9b9f75252a1b7f2b71dc77ed2e74d38148e0a912483f0bedd36a7cff5",
+   "upstream_bytes": 3000902,
+   "sha256": "851d25e9b9f75252a1b7f2b71dc77ed2e74d38148e0a912483f0bedd36a7cff5",
+   "bytes": 3000902,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/479c5e9f-a299-457f-8459-5948adf8aa8e.jsonl": {
+   "harness": "claude",
+   "version": "2.1.167",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/479c5e9f-a299-457f-8459-5948adf8aa8e.jsonl",
+   "upstream_sha256": "8efd5bceea8a840fd7a528e18d62251946b0c883c04883f2515b90b9133d05a9",
+   "upstream_bytes": 1149336,
+   "sha256": "8efd5bceea8a840fd7a528e18d62251946b0c883c04883f2515b90b9133d05a9",
+   "bytes": 1149336,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/47d9fc04-420c-47bb-8ac0-85780af22632.jsonl": {
+   "harness": "claude",
+   "version": "2.1.143",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/47d9fc04-420c-47bb-8ac0-85780af22632.jsonl",
+   "upstream_sha256": "3c5f5c167249e3ec502ef0e068490ddeb49472cd3d5a05a1e646e43e43b73dc7",
+   "upstream_bytes": 3394140,
+   "sha256": "3c5f5c167249e3ec502ef0e068490ddeb49472cd3d5a05a1e646e43e43b73dc7",
+   "bytes": 3394140,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/7563bddf-c1a0-4c3e-86ee-062bf288e6d3.jsonl": {
+   "harness": "claude",
+   "version": "2.1.162",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/7563bddf-c1a0-4c3e-86ee-062bf288e6d3.jsonl",
+   "upstream_sha256": "113f92342fbb0cea1dafe2660d3cfeff24129f8d4c8c7257b5a6836a2820f666",
+   "upstream_bytes": 1979243,
+   "sha256": "113f92342fbb0cea1dafe2660d3cfeff24129f8d4c8c7257b5a6836a2820f666",
+   "bytes": 1979243,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/860618e1-0cf6-43c6-81cf-fe67123082ba.jsonl": {
+   "harness": "claude",
+   "version": "2.1.144",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/860618e1-0cf6-43c6-81cf-fe67123082ba.jsonl",
+   "upstream_sha256": "905ddb1d8d7f6ada5898a5085d0a190fbcb491bb66600c1561f64ad26164ce47",
+   "upstream_bytes": 2698750,
+   "sha256": "905ddb1d8d7f6ada5898a5085d0a190fbcb491bb66600c1561f64ad26164ce47",
+   "bytes": 2698750,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/a20a4070-6246-4e9e-adf6-f38b0c1dc3fa.jsonl": {
+   "harness": "claude",
+   "version": "2.1.168",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/a20a4070-6246-4e9e-adf6-f38b0c1dc3fa.jsonl",
+   "upstream_sha256": "04e26ca61648f0020270366e726124de1fd955bb00d0b1409702f84df12c6e53",
+   "upstream_bytes": 2944308,
+   "sha256": "04e26ca61648f0020270366e726124de1fd955bb00d0b1409702f84df12c6e53",
+   "bytes": 2944308,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/ba1b4916-b581-4e05-9a5c-c1d8ffc9b50a.jsonl": {
+   "harness": "claude",
+   "version": "2.1.145",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/ba1b4916-b581-4e05-9a5c-c1d8ffc9b50a.jsonl",
+   "upstream_sha256": "3d5971c8fc3b07fffcd7a23a350c74d576d5052ded23b2d8686a07cb0c93073b",
+   "upstream_bytes": 641419,
+   "sha256": "3d5971c8fc3b07fffcd7a23a350c74d576d5052ded23b2d8686a07cb0c93073b",
+   "bytes": 641419,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/c84c0ad3-c368-40df-87b1-5ef9effe237a.jsonl": {
+   "harness": "claude",
+   "version": "2.1.158",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/c84c0ad3-c368-40df-87b1-5ef9effe237a.jsonl",
+   "upstream_sha256": "893ec7fdb53b50796262d1d12d5695cf17acab70fbc0821a9dfdef3d7d21e423",
+   "upstream_bytes": 1713621,
+   "sha256": "893ec7fdb53b50796262d1d12d5695cf17acab70fbc0821a9dfdef3d7d21e423",
+   "bytes": 1713621,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/c99032e9-377b-4ae9-a9a9-ec7752b059cd.jsonl": {
+   "harness": "claude",
+   "version": "2.1.162",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/c99032e9-377b-4ae9-a9a9-ec7752b059cd.jsonl",
+   "upstream_sha256": "d320ab80b06a019d279df1f3f3f70fad0ee12b08d1eea2339e7633acbcc80f4d",
+   "upstream_bytes": 3405732,
+   "sha256": "d320ab80b06a019d279df1f3f3f70fad0ee12b08d1eea2339e7633acbcc80f4d",
+   "bytes": 3405732,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/trace-commons__agent-traces/comparia-voting-fields-anon.jsonl": {
+   "harness": "claude",
+   "version": "2.1.160",
+   "source": "trace-commons__agent-traces",
+   "upstream_path": "sessions/claude_code/comparia-voting-fields-anon.jsonl",
+   "upstream_sha256": "abb8c2299775633c0d53dbe8218c276594f324bb71d3bfba65944a865107daf4",
+   "upstream_bytes": 104971,
+   "sha256": "abb8c2299775633c0d53dbe8218c276594f324bb71d3bfba65944a865107daf4",
+   "bytes": 104971,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/yellowbeeblackbee__claude-traces/581ccfae-8df9-4c5f-a6f0-3829b5f36a40.jsonl": {
+   "harness": "claude",
+   "version": "2.1.170",
+   "source": "yellowbeeblackbee__claude-traces",
+   "upstream_path": "581ccfae-8df9-4c5f-a6f0-3829b5f36a40.jsonl",
+   "upstream_sha256": "fea582dfcf6c543776bd752192b4c420091e186eecf173f2b84a9c305eee7e8f",
+   "upstream_bytes": 417028,
+   "sha256": "fea582dfcf6c543776bd752192b4c420091e186eecf173f2b84a9c305eee7e8f",
+   "bytes": 417028,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/claude/yellowbeeblackbee__claude-traces/b214f655-00a5-4231-850c-d74443f46275.jsonl": {
+   "harness": "claude",
+   "version": "2.1.170",
+   "source": "yellowbeeblackbee__claude-traces",
+   "upstream_path": "b214f655-00a5-4231-850c-d74443f46275.jsonl",
+   "upstream_sha256": "a88defafddd314aaa49ee593c38b8e7108e8f46b661d3be6931d6e56ecb1dd74",
+   "upstream_bytes": 304923,
+   "sha256": "a88defafddd314aaa49ee593c38b8e7108e8f46b661d3be6931d6e56ecb1dd74",
+   "bytes": 304923,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/codex/build-small-hackathon__lost-found-desk-codex-traces/rollout-2026-06-14T20-33-08-019ec61f-1e93-79f1-a186-19bc0288e629.jsonl": {
+   "harness": "codex",
+   "version": "0.140.0-alpha.2",
+   "source": "build-small-hackathon__lost-found-desk-codex-traces",
+   "upstream_path": "traces/2026/06/14/rollout-2026-06-14T20-33-08-019ec61f-1e93-79f1-a186-19bc0288e629.jsonl",
+   "upstream_sha256": "1e8ba3f843dab310034be32258feb8fff463286180bbb63374f372a5fc1f2e96",
+   "upstream_bytes": 3407296,
+   "sha256": "bcb8c19377d4c52c33b1dd90ec953272defc4acb79e5ad3153248d79ba8fabf1",
+   "bytes": 3404234,
+   "redactions": {
+    "home": 1,
+    "encoded_home": 0,
+    "email": 69,
+    "token": 0,
+    "secret": 96
+   }
+  },
+  "sessions/codex/kaupane__AstroAgentBench-Traces/rollout-2026-04-30T03-31-33-019ddc71-1b68-7982-8256-c894bdb7bf5c.jsonl": {
+   "harness": "codex",
+   "version": "0.125.0",
+   "source": "kaupane__AstroAgentBench-Traces",
+   "upstream_path": "sessions/agent_runs/experiments/main_agentic/matrix/aeossp_standard/codex/test/case_0001/session_logs/sessions/2026/04/30/rollout-2026-04-30T03-31-33-019ddc71-1b68-7982-8256-c894bdb7bf5c.jsonl",
+   "upstream_sha256": "178b152654d91e3b722321f25a37d288aebd2eaf9698c1bcdc53cffad3bedefb",
+   "upstream_bytes": 686740,
+   "sha256": "178b152654d91e3b722321f25a37d288aebd2eaf9698c1bcdc53cffad3bedefb",
+   "bytes": 686740,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/codex/kaupane__AstroAgentBench-Traces/rollout-2026-04-30T03-31-33-019ddc71-1b72-7de3-832b-9566b03f44b8.jsonl": {
+   "harness": "codex",
+   "version": "0.125.0",
+   "source": "kaupane__AstroAgentBench-Traces",
+   "upstream_path": "sessions/agent_runs/experiments/main_agentic/matrix/aeossp_standard/codex/test/case_0002/session_logs/sessions/2026/04/30/rollout-2026-04-30T03-31-33-019ddc71-1b72-7de3-832b-9566b03f44b8.jsonl",
+   "upstream_sha256": "a4615f24492d827105b865b0adaf89bd6fdd54d6afc4ad1f238d6e5d4090fc39",
+   "upstream_bytes": 370057,
+   "sha256": "a4615f24492d827105b865b0adaf89bd6fdd54d6afc4ad1f238d6e5d4090fc39",
+   "bytes": 370057,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  },
+  "sessions/codex/nielsr__r3al-vit-quantization-codex-trace/r3al-vit-quantization-codex-trace.jsonl": {
+   "harness": "codex",
+   "version": "0.147.0-alpha.1.2",
+   "source": "nielsr__r3al-vit-quantization-codex-trace",
+   "upstream_path": "r3al-vit-quantization-codex-trace.jsonl",
+   "upstream_sha256": "49139871dcee1de04956fb41da9fb4cae66b832f76af928c2200c8f8f7bbf9a0",
+   "upstream_bytes": 6140719,
+   "sha256": "586413cc4ca5b98c83e811dfa56af6ba2e6c7062ec903c77d0ebb74d1d8e8da2",
+   "bytes": 6138951,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 16
+   }
+  },
+  "sessions/codex/thomwolf__am-session-codex-check-d17941/rollout-2026-07-28T05-34-19-019fa737-7c2e-7393-89cf-9d9c60ea3899.jsonl": {
+   "harness": "codex",
+   "version": "0.145.0",
+   "source": "thomwolf__am-session-codex-check-d17941",
+   "upstream_path": "rollout-2026-07-28T05-34-19-019fa737-7c2e-7393-89cf-9d9c60ea3899.jsonl",
+   "upstream_sha256": "567e6b9ff9751a28c2fb66bd14aeca7dd098bcf7971ed7626590156a355b856a",
+   "upstream_bytes": 35761,
+   "sha256": "567e6b9ff9751a28c2fb66bd14aeca7dd098bcf7971ed7626590156a355b856a",
+   "bytes": 35761,
+   "redactions": {
+    "home": 0,
+    "encoded_home": 0,
+    "email": 0,
+    "token": 0,
+    "secret": 0
+   }
+  }
+ }
+}
