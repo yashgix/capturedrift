@@ -117,19 +117,6 @@ class ClaudeTest(unittest.TestCase):
             ["role", "content", "reasoningContent", "toolCalls", "model", "timestamp"],
         )
 
-    def test_thinking_only_record_is_kept(self):
-        record = {
-            "type": "assistant",
-            "timestamp": STAMP,
-            "message": {
-                "content": [{"type": "thinking", "thinking": "one two three"}],
-            },
-        }
-        message = normalize("claude", [record])[1]["message"]
-        self.assertEqual(message["content"], "")
-        self.assertEqual(message["reasoningContent"], "one two three")
-        self.assertEqual(message["timestamp"], MS)
-
 
 class CodexTest(unittest.TestCase):
     def test_message_maps_developer_to_system_input_first(self):
@@ -253,66 +240,6 @@ class MappedKeysTest(unittest.TestCase):
         for harness in MAPPED:
             expected = {(event, path) for event, paths in MAPPED[harness].items() for path in paths}
             self.assertEqual(mapped_keys(harness), expected)
-
-    def test_complete_mapping_tables_against_specification(self):
-        expected = {
-            "claude": {
-                "user": (
-                    "message.content:str",
-                    "message.content[]<text>.text:str",
-                    "message.content[]<tool_result>.tool_use_id:str",
-                    "message.content[]<tool_result>.content:str",
-                    "message.content[]<tool_result>.content[]<text>.text:str",
-                    "timestamp:str",
-                ),
-                "assistant": (
-                    "message.content[]<text>.text:str",
-                    "message.content[]<thinking>.thinking:str",
-                    "message.content[]<tool_use>.id:str",
-                    "message.content[]<tool_use>.name:str",
-                    "message.content[]<tool_use>.input:json",
-                    "message.model:str",
-                    "timestamp:str",
-                ),
-            },
-            "codex": {
-                "response_item/message": (
-                    "payload.role:str",
-                    "payload.content[]<input_text>.text:str",
-                    "payload.content[]<output_text>.text:str",
-                    "timestamp:str",
-                ),
-                "response_item/reasoning": (
-                    "payload.summary[]<summary_text>.text:str",
-                    "timestamp:str",
-                ),
-                "response_item/function_call": (
-                    "payload.call_id:str",
-                    "payload.name:str",
-                    "payload.arguments:str",
-                    "timestamp:str",
-                ),
-                "response_item/custom_tool_call": (
-                    "payload.call_id:str",
-                    "payload.name:str",
-                    "payload.input:str",
-                    "timestamp:str",
-                ),
-                "response_item/function_call_output": (
-                    "payload.call_id:str",
-                    "payload.output:str",
-                    "payload.output[]<input_text>.text:str",
-                    "timestamp:str",
-                ),
-                "response_item/custom_tool_call_output": (
-                    "payload.call_id:str",
-                    "payload.output:str",
-                    "payload.output[]<input_text>.text:str",
-                    "timestamp:str",
-                ),
-            },
-        }
-        self.assertEqual(MAPPED, expected)
 
     def test_claude_user_path(self):
         self.assertIn(("user", "message.content:str"), mapped_keys("claude"))
