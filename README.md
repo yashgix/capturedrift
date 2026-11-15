@@ -124,6 +124,11 @@ docs/INTERVIEW.md       five-minute explanation
 
 - **Small data.** 40 sessions, at most two per version; Codex has 5 sessions and only 3 held-out versions, so its
   numbers illustrate a method rather than estimate a population.
+- **The split is by version, not by date.** Training and held-out are cut at a version number. Session start dates
+  are not in version order (the 2.1.123 sessions started before the 2.1.114 ones), so this is not a chronological
+  split. It matches the question, since a parser is frozen at a version.
+- **Codex training is one version.** Codex training is 0.125.0 alone, so its training period has no version change.
+  The byte threshold is tuned on Claude's training changes only.
 - **Version and source are confounded.** Most versions come from a different dataset, user and setup (for example
   Codex `codex_exec` versus the desktop app), so a new key can mean a format change or a feature first used in
   that data. Both break a frozen importer; this experiment cannot tell them apart.

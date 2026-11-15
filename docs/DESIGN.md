@@ -64,7 +64,8 @@ report says so.
 The parser stands still at a cutoff: Claude Code 2.1.145 and Codex 0.125.0. Training sessions are those whose
 version is numerically at or before the cutoff, compared as tuples of integers extracted from the version string
 (`0.147.0-alpha.1.2` → `(0, 147, 0, 1, 2)`) so `2.1.9` sorts before `2.1.10`. Everything after the cutoff is
-held out.
+held out. The split is by version number, not by date: start dates are not in version order, so it is not a
+chronological split. Codex training is one version (0.125.0), so it has no training version change.
 
 The training sessions define the set of keys the frozen parser knows. Anything a held-out session puts outside
 that set is invisible to it, and the frozen shares report how much of the held-out records, bytes and text that
