@@ -24,7 +24,7 @@ HARNESS_HEADER = (
     "Text unseen",
     "New keys",
     "New content keys",
-    "STS text",
+    "STS text (all sessions)",
 )
 VERSION_HEADER = (
     "Harness",

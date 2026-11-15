@@ -7,27 +7,34 @@
     "injected": 6
    },
    "frozen": {
-    "copy": 21234,
-    "copy_share": 0.001697,
+    "approx": 21100,
+    "approx_share": 0.001687,
+    "exact": 134,
+    "exact_share": 1.1e-05,
     "kinds": {
      "attachment/agent_listing_delta": [
+      0,
       0,
       4646
      ],
      "attachment/invoked_skills": [
+      0,
       21100,
       0
      ],
      "attachment/nested_memory": [
       0,
+      0,
       3116
      ],
      "system/api_error": [
+      0,
       0,
       3080
      ],
      "system/local_command": [
       134,
+      0,
       21049
      ]
     },
@@ -95,100 +102,238 @@
    },
    "sidechain_records": 0,
    "sts_dropped": {
-    "copy": 10355124,
-    "copy_share": 0.453736,
+    "approx": 4681733,
+    "approx_share": 0.205142,
+    "exact": 5659973,
+    "exact_share": 0.248006,
     "kinds": {
      "ai-title": [
+      0,
       0,
       39317
      ],
      "attachment/agent_listing_delta": [
       0,
+      0,
       4646
      ],
      "attachment/diagnostics": [
       0,
+      0,
       73822
      ],
      "attachment/edited_text_file": [
-      46558,
-      26981
+      0,
+      52876,
+      20663
      ],
      "attachment/file": [
-      253599,
-      53305
+      50880,
+      193065,
+      62959
      ],
      "attachment/hook_additional_context": [
+      0,
       0,
       51766
      ],
      "attachment/hook_success": [
       0,
+      0,
       149679
      ],
      "attachment/invoked_skills": [
+      0,
       21100,
       0
      ],
      "attachment/mcp_instructions_delta": [
       0,
+      0,
       4274
      ],
      "attachment/nested_memory": [
       0,
+      0,
       3116
      ],
      "attachment/queued_command": [
-      17278,
+      813,
+      16465,
       19264
      ],
      "attachment/skill_listing": [
+      0,
       0,
       166008
      ],
      "attachment/task_reminder": [
       1526,
+      0,
       0
      ],
      "attachment/todo_reminder": [
       106595,
+      0,
       0
      ],
      "last-prompt": [
-      33969,
-      89759
+      33835,
+      1196,
+      88697
      ],
      "queue-operation": [
       6310,
+      0,
       14761
      ],
      "system/api_error": [
+      0,
       0,
       3704
      ],
      "system/away_summary": [
       0,
+      0,
       4334
      ],
      "system/local_command": [
       134,
+      0,
       21049
      ],
      "system/scheduled_task_fire": [
+      0,
       0,
       90
      ],
      "system/stop_hook_summary": [
       0,
+      0,
       2716
      ],
      "user": [
-      9868055,
-      1681704
+      5459880,
+      4397031,
+      1692848
      ]
     },
-    "unique": 2410295,
-    "unique_share": 0.105613
+    "unique": 2423713,
+    "unique_share": 0.106201
+   },
+   "sts_dropped_held_out": {
+    "approx": 2709595,
+    "approx_share": 0.216578,
+    "exact": 3092559,
+    "exact_share": 0.247189,
+    "kinds": {
+     "ai-title": [
+      0,
+      0,
+      24084
+     ],
+     "attachment/agent_listing_delta": [
+      0,
+      0,
+      4646
+     ],
+     "attachment/diagnostics": [
+      0,
+      0,
+      11983
+     ],
+     "attachment/edited_text_file": [
+      0,
+      23450,
+      19306
+     ],
+     "attachment/file": [
+      17409,
+      94095,
+      38405
+     ],
+     "attachment/hook_additional_context": [
+      0,
+      0,
+      49188
+     ],
+     "attachment/hook_success": [
+      0,
+      0,
+      149566
+     ],
+     "attachment/invoked_skills": [
+      0,
+      21100,
+      0
+     ],
+     "attachment/mcp_instructions_delta": [
+      0,
+      0,
+      3900
+     ],
+     "attachment/nested_memory": [
+      0,
+      0,
+      3116
+     ],
+     "attachment/queued_command": [
+      0,
+      16465,
+      9331
+     ],
+     "attachment/skill_listing": [
+      0,
+      0,
+      124056
+     ],
+     "attachment/todo_reminder": [
+      85756,
+      0,
+      0
+     ],
+     "last-prompt": [
+      21551,
+      0,
+      34062
+     ],
+     "queue-operation": [
+      428,
+      0,
+      5244
+     ],
+     "system/api_error": [
+      0,
+      0,
+      3080
+     ],
+     "system/away_summary": [
+      0,
+      0,
+      3456
+     ],
+     "system/local_command": [
+      134,
+      0,
+      21049
+     ],
+     "system/stop_hook_summary": [
+      0,
+      0,
+      2716
+     ],
+     "user": [
+      2967281,
+      2554485,
+      838984
+     ]
+    },
+    "unique": 1346172,
+    "unique_share": 0.1076
+   },
+   "sts_text_share": {
+    "all": 0.440651,
+    "held_out": 0.428633
    },
    "versions": {
     "2.1.114": {
@@ -208,12 +353,12 @@
      "bytes": 1973156,
      "emitted": 865111,
      "new_conversation_keys": 1,
-     "new_kinds": 3,
+     "new_kinds": 0,
      "quiet_keys": 0,
      "quiet_mapped_keys": 0,
      "reasoning": 279407,
      "sessions": 2,
-     "source": 865131,
+     "source": 865111,
      "thinking_blocks": 180,
      "thinking_empty": 10
     },
@@ -221,12 +366,12 @@
      "bytes": 250429,
      "emitted": 75314,
      "new_conversation_keys": 8,
-     "new_kinds": 12,
+     "new_kinds": 10,
      "quiet_keys": 1,
      "quiet_mapped_keys": 1,
      "reasoning": 0,
      "sessions": 1,
-     "source": 75338,
+     "source": 75314,
      "thinking_blocks": 12,
      "thinking_empty": 12
     },
@@ -234,7 +379,7 @@
      "bytes": 2425434,
      "emitted": 742427,
      "new_conversation_keys": 5,
-     "new_kinds": 5,
+     "new_kinds": 1,
      "quiet_keys": 3,
      "quiet_mapped_keys": 1,
      "reasoning": 0,
@@ -247,12 +392,12 @@
      "bytes": 2726709,
      "emitted": 633787,
      "new_conversation_keys": 11,
-     "new_kinds": 9,
+     "new_kinds": 2,
      "quiet_keys": 1,
      "quiet_mapped_keys": 0,
      "reasoning": 0,
      "sessions": 1,
-     "source": 634009,
+     "source": 633787,
      "thinking_blocks": 111,
      "thinking_empty": 111
     },
@@ -273,7 +418,7 @@
      "bytes": 3903754,
      "emitted": 918855,
      "new_conversation_keys": 0,
-     "new_kinds": 1,
+     "new_kinds": 0,
      "quiet_keys": 0,
      "quiet_mapped_keys": 0,
      "reasoning": 0,
@@ -286,7 +431,7 @@
      "bytes": 1467965,
      "emitted": 244344,
      "new_conversation_keys": 0,
-     "new_kinds": 3,
+     "new_kinds": 0,
      "quiet_keys": 3,
      "quiet_mapped_keys": 2,
      "reasoning": 0,
@@ -304,7 +449,7 @@
      "quiet_mapped_keys": 1,
      "reasoning": 0,
      "sessions": 1,
-     "source": 33653,
+     "source": 33639,
      "thinking_blocks": 7,
      "thinking_empty": 7
     },
@@ -317,7 +462,7 @@
      "quiet_mapped_keys": 0,
      "reasoning": 0,
      "sessions": 1,
-     "source": 22336,
+     "source": 22328,
      "thinking_blocks": 4,
      "thinking_empty": 4
     },
@@ -325,7 +470,7 @@
      "bytes": 4282610,
      "emitted": 1306870,
      "new_conversation_keys": 4,
-     "new_kinds": 3,
+     "new_kinds": 1,
      "quiet_keys": 1,
      "quiet_mapped_keys": 1,
      "reasoning": 0,
@@ -351,7 +496,7 @@
      "bytes": 4794873,
      "emitted": 1678156,
      "new_conversation_keys": 0,
-     "new_kinds": 5,
+     "new_kinds": 2,
      "quiet_keys": 0,
      "quiet_mapped_keys": 0,
      "reasoning": 0,
@@ -364,12 +509,12 @@
      "bytes": 660391,
      "emitted": 214616,
      "new_conversation_keys": 0,
-     "new_kinds": 3,
+     "new_kinds": 1,
      "quiet_keys": 1,
      "quiet_mapped_keys": 1,
      "reasoning": 0,
      "sessions": 1,
-     "source": 214748,
+     "source": 214616,
      "thinking_blocks": 66,
      "thinking_empty": 66
     },
@@ -377,12 +522,12 @@
      "bytes": 604291,
      "emitted": 201124,
      "new_conversation_keys": 1,
-     "new_kinds": 1,
+     "new_kinds": 0,
      "quiet_keys": 1,
      "quiet_mapped_keys": 0,
      "reasoning": 0,
      "sessions": 2,
-     "source": 201182,
+     "source": 201124,
      "thinking_blocks": 29,
      "thinking_empty": 29
     },
@@ -390,12 +535,12 @@
      "bytes": 165065,
      "emitted": 20292,
      "new_conversation_keys": 0,
-     "new_kinds": 1,
+     "new_kinds": 0,
      "quiet_keys": 1,
      "quiet_mapped_keys": 1,
      "reasoning": 0,
      "sessions": 2,
-     "source": 20336,
+     "source": 20292,
      "thinking_blocks": 22,
      "thinking_empty": 22
     },
@@ -408,7 +553,7 @@
      "quiet_mapped_keys": 0,
      "reasoning": 0,
      "sessions": 2,
-     "source": 310007,
+     "source": 309943,
      "thinking_blocks": 32,
      "thinking_empty": 32
     },
@@ -421,7 +566,7 @@
      "quiet_mapped_keys": 0,
      "reasoning": 0,
      "sessions": 2,
-     "source": 56732,
+     "source": 56696,
      "thinking_blocks": 18,
      "thinking_empty": 18
     },
@@ -429,12 +574,12 @@
      "bytes": 2410800,
      "emitted": 295605,
      "new_conversation_keys": 4,
-     "new_kinds": 1,
+     "new_kinds": 0,
      "quiet_keys": 0,
      "quiet_mapped_keys": 0,
      "reasoning": 0,
      "sessions": 2,
-     "source": 295761,
+     "source": 295605,
      "thinking_blocks": 78,
      "thinking_empty": 78
     },
@@ -442,12 +587,12 @@
      "bytes": 1409132,
      "emitted": 217478,
      "new_conversation_keys": 1,
-     "new_kinds": 1,
+     "new_kinds": 0,
      "quiet_keys": 0,
      "quiet_mapped_keys": 0,
      "reasoning": 0,
      "sessions": 2,
-     "source": 217572,
+     "source": 217478,
      "thinking_blocks": 47,
      "thinking_empty": 47
     },
@@ -455,12 +600,12 @@
      "bytes": 1640541,
      "emitted": 394218,
      "new_conversation_keys": 0,
-     "new_kinds": 2,
+     "new_kinds": 0,
      "quiet_keys": 3,
      "quiet_mapped_keys": 1,
      "reasoning": 0,
      "sessions": 2,
-     "source": 394292,
+     "source": 394218,
      "thinking_blocks": 37,
      "thinking_empty": 37
     },
@@ -468,12 +613,12 @@
      "bytes": 1787624,
      "emitted": 185433,
      "new_conversation_keys": 3,
-     "new_kinds": 5,
+     "new_kinds": 1,
      "quiet_keys": 1,
      "quiet_mapped_keys": 1,
      "reasoning": 0,
      "sessions": 2,
-     "source": 185495,
+     "source": 185433,
      "thinking_blocks": 31,
      "thinking_empty": 31
     }
@@ -485,64 +630,79 @@
     "injected": 15
    },
    "frozen": {
-    "copy": 162891,
-    "copy_share": 0.04869,
+    "approx": 130393,
+    "approx_share": 0.038976,
+    "exact": 79105,
+    "exact_share": 0.023646,
     "kinds": {
      "compacted": [
       79105,
+      0,
       0
      ],
      "event_msg/agent_reasoning": [
+      0,
       0,
       1861
      ],
      "event_msg/mcp_tool_call_end": [
       0,
+      0,
       97687
      ],
      "event_msg/patch_apply_end": [
-      38883,
-      38813
+      0,
+      69544,
+      8152
      ],
      "event_msg/thread_settings_applied": [
       0,
-      1876
+      1876,
+      0
      ],
      "event_msg/web_search_end": [
+      0,
       0,
       7604
      ],
      "response_item/custom_tool_call_output": [
       0,
+      0,
       522081
      ],
      "response_item/function_call_output": [
+      0,
       0,
       26618
      ],
      "response_item/reasoning": [
       0,
+      0,
       1861
      ],
      "response_item/web_search_call": [
+      0,
       0,
       150
      ],
      "session_meta": [
       0,
+      0,
       108750
      ],
      "turn_context": [
       0,
-      14070
+      14070,
+      0
      ],
      "world_state": [
+      0,
       44903,
       0
      ]
     },
-    "unique": 821371,
-    "unique_share": 0.245519
+    "unique": 774764,
+    "unique_share": 0.231588
    },
    "kind_alarms": {
     "any": {
@@ -605,64 +765,158 @@
    },
    "sidechain_records": 0,
    "sts_dropped": {
-    "copy": 359630,
-    "copy_share": 0.089187,
+    "approx": 138683,
+    "approx_share": 0.034393,
+    "exact": 267554,
+    "exact_share": 0.066352,
     "kinds": {
      "compacted": [
       79105,
+      0,
       0
      ],
      "event_msg/agent_message": [
       68087,
+      0,
       0
      ],
      "event_msg/agent_reasoning": [
       1861,
+      0,
       0
      ],
      "event_msg/mcp_tool_call_end": [
-      90995,
+      90406,
+      589,
       6692
      ],
      "event_msg/patch_apply_end": [
-      44120,
-      33576
+      0,
+      74781,
+      2915
      ],
      "event_msg/task_complete": [
       15346,
+      0,
       0
      ],
      "event_msg/thread_settings_applied": [
       0,
-      1876
+      1876,
+      0
      ],
      "event_msg/user_message": [
       12749,
+      0,
       0
      ],
      "event_msg/web_search_end": [
+      0,
       92,
       7512
      ],
      "response_item/web_search_call": [
       0,
+      0,
       150
      ],
      "session_meta": [
       0,
+      0,
       404066
      ],
      "turn_context": [
-      2372,
-      14070
+      0,
+      16442,
+      0
      ],
      "world_state": [
+      0,
       44903,
       0
      ]
     },
-    "unique": 467942,
-    "unique_share": 0.116048
+    "unique": 421335,
+    "unique_share": 0.10449
+   },
+   "sts_dropped_held_out": {
+    "approx": 136311,
+    "approx_share": 0.040745,
+    "exact": 258703,
+    "exact_share": 0.07733,
+    "kinds": {
+     "compacted": [
+      79105,
+      0,
+      0
+     ],
+     "event_msg/agent_message": [
+      60579,
+      0,
+      0
+     ],
+     "event_msg/agent_reasoning": [
+      1861,
+      0,
+      0
+     ],
+     "event_msg/mcp_tool_call_end": [
+      90406,
+      589,
+      6692
+     ],
+     "event_msg/patch_apply_end": [
+      0,
+      74781,
+      2915
+     ],
+     "event_msg/task_complete": [
+      14721,
+      0,
+      0
+     ],
+     "event_msg/thread_settings_applied": [
+      0,
+      1876,
+      0
+     ],
+     "event_msg/user_message": [
+      12031,
+      0,
+      0
+     ],
+     "event_msg/web_search_end": [
+      0,
+      92,
+      7512
+     ],
+     "response_item/web_search_call": [
+      0,
+      0,
+      150
+     ],
+     "session_meta": [
+      0,
+      0,
+      374254
+     ],
+     "turn_context": [
+      0,
+      14070,
+      0
+     ],
+     "world_state": [
+      0,
+      44903,
+      0
+     ]
+    },
+    "unique": 391523,
+    "unique_share": 0.117032
+   },
+   "sts_text_share": {
+    "all": 0.794765,
+    "held_out": 0.764893
    },
    "versions": {
     "0.125.0": {
@@ -682,7 +936,7 @@
      "bytes": 3080835,
      "emitted": 1879107,
      "new_conversation_keys": 0,
-     "new_kinds": 9,
+     "new_kinds": 5,
      "quiet_keys": 1,
      "quiet_mapped_keys": 0,
      "reasoning": 0,
@@ -695,7 +949,7 @@
      "bytes": 32736,
      "emitted": 8248,
      "new_conversation_keys": 2,
-     "new_kinds": 7,
+     "new_kinds": 1,
      "quiet_keys": 1,
      "quiet_mapped_keys": 0,
      "reasoning": 0,
@@ -708,12 +962,12 @@
      "bytes": 6004817,
      "emitted": 673474,
      "new_conversation_keys": 19,
-     "new_kinds": 12,
+     "new_kinds": 3,
      "quiet_keys": 0,
      "quiet_mapped_keys": 0,
      "reasoning": 1861,
      "sessions": 1,
-     "source": 673474,
+     "source": 673430,
      "thinking_blocks": 0,
      "thinking_empty": 0
     }

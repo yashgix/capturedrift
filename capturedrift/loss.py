@@ -11,13 +11,25 @@ from pathlib import Path
 
 from . import DATA_DIR, HARNESSES
 from .data import Session, load, read_records
-from .drift import CONTENT_MIN, Key, changes, is_train, key_totals, known_keys, share, tune_bytes_min, versions
+from .drift import (
+    CONTENT_MIN,
+    Key,
+    changes,
+    is_train,
+    key_totals,
+    known_keys,
+    mapped_share,
+    share,
+    tune_bytes_min,
+    versions,
+)
 from .shape import is_text, kind, leaf_values, size
 from .sts import mapped_keys, normalize
 
 PAYLOAD = (".text:str", ".thinking:str", "content:str", ".input:json", ".arguments:str", ".input:str", ".output:str")
 LINE_NUMBER = re.compile(r"^\s*\d+[→\t]")
 COPY_COVERAGE = 0.9
+EXACT, APPROX, UNIQUE = range(3)
 
 
 def load_raw(data_dir=DATA_DIR) -> list[tuple[Session, list[dict]]]:
@@ -25,18 +37,18 @@ def load_raw(data_dir=DATA_DIR) -> list[tuple[Session, list[dict]]]:
     return [(session, read_records(Path(data_dir) / session.name)) for session in load(data_dir)]
 
 
-def payload_bytes(session: Session, mapped: set[Key]) -> int:
-    """Bytes at mapped keys that carry content (text, thinking, tool arguments and results)."""
+def payload_bytes(harness: str, records: list[dict], mapped: set[Key]) -> int:
+    """Bytes of non-empty content (text, thinking, tool arguments and results) at mapped keys."""
     return sum(
-        nbytes
-        for record in session.records
-        for path, (nbytes, _) in record.leaves.items()
-        if path.endswith(PAYLOAD) and (record.kind, path) in mapped
+        size(value)
+        for record in records
+        for path, value in leaf_values(harness, record)
+        if path.endswith(PAYLOAD) and value != "" and (kind(harness, record), path) in mapped
     )
 
 
 def emitted_bytes(harness: str, lines: list[dict]) -> dict[str, int]:
-    """Content bytes normalize wrote, in the same units as payload_bytes, and the reasoning part of them."""
+    """Non-empty content bytes normalize wrote, in the units of payload_bytes, and the reasoning part of them."""
     total = reasoning = 0
     for line in lines[1:]:
         message = line["message"]
@@ -45,7 +57,8 @@ def emitted_bytes(harness: str, lines: list[dict]) -> dict[str, int]:
         reasoning += size(thoughts) if thoughts else 0
         for call in message.get("toolCalls", ()):
             arguments = call["function"]["arguments"]
-            total += size(arguments) if harness == "codex" else len(arguments.encode())
+            if arguments:
+                total += size(arguments) if harness == "codex" else len(arguments.encode())
     return {"emitted": total + reasoning, "reasoning": reasoning}
 
 
@@ -54,7 +67,7 @@ def conservation(harness: str, group: list[tuple[Session, list[dict]]]) -> dict[
     mapped = mapped_keys(harness)
     out = {"source": 0, "emitted": 0, "reasoning": 0, "bytes": 0}
     for session, records in group:
-        out["source"] += payload_bytes(session, mapped)
+        out["source"] += payload_bytes(harness, records, mapped)
         out["bytes"] += sum(nbytes for record in session.records for nbytes, _ in record.leaves.values())
         for name, value in emitted_bytes(harness, normalize(harness, records)).items():
             out[name] += value
@@ -78,7 +91,7 @@ def _lines(text: str) -> list[str]:
 
 
 class Captured:
-    """The strings a parser did keep, for telling a copy of kept content from content that is truly lost."""
+    """The strings a parser did keep, for telling a copy of kept content from content it does not have."""
 
     def __init__(self, values):
         self.whole = set()
@@ -87,15 +100,17 @@ class Captured:
             self.whole.add(text)
             self.lines.update(_lines(text))
 
-    def has(self, text: str) -> bool:
+    def match(self, text: str) -> int:
+        """EXACT when text was kept verbatim, APPROX when 90% of its line bytes were (a heuristic), else UNIQUE."""
         if text in self.whole:
-            return True
+            return EXACT
         lines = _lines(text)
-        return bool(lines) and share(sum(line in self.lines for line in lines), len(lines)) >= COPY_COVERAGE
+        kept = sum(len(line) for line in lines if line in self.lines)
+        return APPROX if lines and share(kept, sum(len(line) for line in lines)) >= COPY_COVERAGE else UNIQUE
 
 
 def split_loss(records: list[dict], harness: str, kept: set[Key]) -> dict[tuple[str, str], list[int]]:
-    """{(kind, path): [copy text bytes, unique text bytes]} for text at keys outside kept, per session."""
+    """{(kind, path): [exact, approximate, unmatched text bytes]} at keys outside kept, for one session."""
     leaves = [
         (kind(harness, record), path, value) for record in records for path, value in leaf_values(harness, record)
     ]
@@ -105,18 +120,18 @@ def split_loss(records: list[dict], harness: str, kept: set[Key]) -> dict[tuple[
         if (name, path) in kept:
             continue
         for text in filter(is_text, _strings(value)):
-            out.setdefault((name, path), [0, 0])[0 if captured.has(text) else 1] += size(text)
+            out.setdefault((name, path), [0, 0, 0])[captured.match(text)] += size(text)
     return out
 
 
 def loss_split(raw, harness: str, kept: set[Key]) -> dict[str, list[int]]:
-    """{kind: [copy text bytes, unique text bytes]} at keys outside kept, summed over raw sessions."""
+    """{kind: [exact, approximate, unmatched text bytes]} at keys outside kept, summed over raw sessions."""
     per_kind: dict[str, list[int]] = {}
     for _, records in raw:
-        for (name, _), (copy, unique) in split_loss(records, harness, kept).items():
-            entry = per_kind.setdefault(name, [0, 0])
-            entry[0] += copy
-            entry[1] += unique
+        for (name, _), amounts in split_loss(records, harness, kept).items():
+            entry = per_kind.setdefault(name, [0, 0, 0])
+            for index, amount in enumerate(amounts):
+                entry[index] += amount
     return per_kind
 
 
@@ -153,6 +168,17 @@ def went_quiet(sessions: list[Session], harness: str) -> dict[str, list[Key]]:
     return out
 
 
+def new_kinds(sessions: list[Session]) -> dict[str, int]:
+    """Per version, how many record kinds no earlier version has; 0 for the first version."""
+    seen: set[str] = set()
+    out = {}
+    for version, group in versions(sessions):
+        kinds = {record.kind for session in group for record in session.records}
+        out[version] = len(kinds - seen) if seen else 0
+        seen |= kinds
+    return out
+
+
 def wilson(hits: int, total: int, z: float = 1.96) -> list[float]:
     """Wilson 95% interval for hits out of total; [0, 1] when total is 0."""
     if not total:
@@ -186,8 +212,6 @@ def kind_scores(found: list, held: set[str], conversation: set[str]) -> dict:
         "conversation": sum(1 for name, _ in held_content if name in conversation),
         "injected": sum(1 for name, _ in held_content if name not in conversation),
     }
-    new_kinds = {change.version: {name for name, _ in change.new} for change in found}
-    out["new_kinds"] = {version: len(names) for version, names in new_kinds.items()}
     out["new_conversation_keys"] = {
         change.version: sum(1 for name, _ in change.new if name in conversation) for change in found
     }
@@ -199,16 +223,13 @@ def _text_total(sessions: list[Session]) -> int:
 
 
 def _loss_row(raw, harness: str, kept: set[Key], total: int) -> dict:
-    """Copy and unique text bytes outside kept, with their shares of total text bytes."""
+    """Exact, approximate and unmatched text bytes outside kept, with their shares of total text bytes."""
     kinds = loss_split(raw, harness, kept)
-    copy, unique = (sum(entry[i] for entry in kinds.values()) for i in (0, 1))
-    return {
-        "kinds": kinds,
-        "copy": copy,
-        "unique": unique,
-        "copy_share": round(share(copy, total), 6),
-        "unique_share": round(share(unique, total), 6),
-    }
+    out = {"kinds": kinds}
+    for index, name in enumerate(("exact", "approx", "unique")):
+        out[name] = sum(entry[index] for entry in kinds.values())
+        out[name + "_share"] = round(share(out[name], total), 6)
+    return out
 
 
 def _version_row(harness: str, group: list[tuple[Session, list[dict]]], quiet: list[Key], new: dict) -> dict:
@@ -238,18 +259,24 @@ def summarize_loss(raw: list[tuple[Session, list[dict]]], bytes_min: int) -> dic
         found = changes(sessions, bytes_min)
         conversation = {name for name, _ in mapped_keys(harness)}
         quiet = went_quiet(sessions, harness)
+        fresh = new_kinds(sessions)
         scores = kind_scores(found, {session.version for session, _ in test}, conversation)
         rows = {}
         for version, _ in versions(sessions):
             members = [(s, r) for s, r in own if s.version == version]
             new = {
-                "new_kinds": scores["new_kinds"].get(version, 0),
+                "new_kinds": fresh[version],
                 "new_conversation_keys": scores["new_conversation_keys"].get(version, 0),
             }
             rows[version] = _version_row(harness, members, quiet[version], new)
         out["harness"][harness] = {
             "frozen": _loss_row(test, harness, train_keys, _text_total([s for s, _ in test])),
             "sts_dropped": _loss_row(own, harness, mapped_keys(harness), _text_total(sessions)),
+            "sts_dropped_held_out": _loss_row(test, harness, mapped_keys(harness), _text_total([s for s, _ in test])),
+            "sts_text_share": {
+                "all": round(mapped_share(sessions, mapped_keys(harness))["text"], 6),
+                "held_out": round(mapped_share([s for s, _ in test], mapped_keys(harness))["text"], 6),
+            },
             "sidechain_records": sum(sidechain_records(records) for _, records in own),
             "kind_alarms": {alarm: scores[alarm] for alarm in ("kind", "any", "bytes")},
             "content_keys": scores["content_keys"],

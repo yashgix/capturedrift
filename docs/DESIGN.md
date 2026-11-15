@@ -137,9 +137,10 @@ Text is joined with `"\n"`. Timestamps become exact epoch milliseconds: parse wi
 a naive time as UTC, subtract the epoch and floor-divide by one millisecond. Unparseable or absent timestamps are
 omitted, not faked.
 
-The normalizer's share is reported two ways, bytes and text, over all of a harness's sessions, both against the
-same denominator as the frozen shares. That is what makes the comparison fair: the same byte ruler measures the
-loss and the retention.
+The normalizer's share is reported two ways, bytes and text. The v1 metrics compute it over all of a harness's
+sessions, while the frozen shares use only the held-out sessions, so the two are not on the same denominator. The
+loss accounting reports the STS share on both populations, labelled, and the held-out one is the like-for-like
+figure for the frozen shares.
 
 ## Determinism
 
@@ -178,5 +179,5 @@ chooses.
 v2 keeps the v1 measurements and adds `capturedrift/loss.py` (see `SPEC-v2.md`). The v1 STS share counts bytes at
 mapped paths. The loss accounting runs `normalize` on the raw records and counts the content it wrote, so a
 normalizer that reads the wrong field shows up as missing bytes. The thinking bug was exactly that. Unread text is
-split into copies of kept content and unique text, so tool results repeated in `toolUseResult` do not count as
-loss. Alarms are also scored per record kind, because one new record kind brings dozens of new keys at once.
+split into exact copies of kept content, approximate copies (a heuristic) and text not matched, so tool results
+repeated in `toolUseResult` do not count as loss. Alarms are also scored per record kind, because one new record kind brings dozens of new keys at once.

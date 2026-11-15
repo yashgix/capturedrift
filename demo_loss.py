@@ -13,23 +13,23 @@ CONSERVATION_HEADER = (
     "Content bytes mapped",
     "Written by normalize",
     "Written / mapped",
-    "Written without reasoning",
+    "Reasoning removed (ablation)",
     "Path-based STS bytes",
     "Written content, share of bytes",
 )
-LOSS_HEADER = ("Harness", "Parser", "Copy of kept content", "Unique, truly lost")
+LOSS_HEADER = ("Harness", "Parser and sessions", "Exact copy", "Approximate copy (heuristic)", "Not matched")
 VERSION_HEADER = (
     "Harness",
     "Version",
     "Written / mapped",
-    "Without reasoning",
+    "Reasoning removed",
     "Thinking blocks empty",
     "Keys gone quiet (mapped)",
-    "New kinds",
+    "Kinds new to the harness",
     "New keys in user or assistant",
 )
 ALARM_HEADER = ("Harness", "Alarm", "Kind tp", "fp", "fn", "Precision (95%)", "Recall (95%)")
-TOP_HEADER = ("Harness", "Kind", "Unique text bytes", "Copy text bytes")
+TOP_HEADER = ("Harness", "Kind", "Not matched text bytes", "Approximate copy bytes", "Exact copy bytes")
 
 
 def interval(pair) -> str:
@@ -63,23 +63,23 @@ def loss_table(v2) -> str:
     rows = []
     for harness in HARNESSES:
         data = v2["harness"][harness]
-        rows.append(
-            (
-                LABELS[harness],
-                "Frozen at the cutoff, held-out text",
-                percent(data["frozen"]["copy_share"]),
-                percent(data["frozen"]["unique_share"]),
-            )
-        )
-        rows.append(
-            (
-                LABELS[harness],
-                "STS normalizer, all text",
-                percent(data["sts_dropped"]["copy_share"]),
-                percent(data["sts_dropped"]["unique_share"]),
-            )
-        )
+        for label, name in (
+            ("Frozen at the cutoff, held-out", "frozen"),
+            ("STS mapping, held-out", "sts_dropped_held_out"),
+            ("STS mapping, all sessions", "sts_dropped"),
+        ):
+            row = data[name]
+            cells = (percent(row[part + "_share"]) for part in ("exact", "approx", "unique"))
+            rows.append((LABELS[harness], label, *cells))
     return table(LOSS_HEADER, rows)
+
+
+def retention_table(v2) -> str:
+    rows = []
+    for harness in HARNESSES:
+        shares = v2["harness"][harness]["sts_text_share"]
+        rows.append((LABELS[harness], percent(shares["held_out"]), percent(shares["all"])))
+    return table(("Harness", "Held-out sessions", "All sessions"), rows)
 
 
 def version_table(v2) -> str:
@@ -124,8 +124,8 @@ def top_table(v2) -> str:
     rows = []
     for harness in HARNESSES:
         kinds = v2["harness"][harness]["sts_dropped"]["kinds"]
-        for name, (copy, unique) in sorted(kinds.items(), key=lambda item: (-item[1][1], item[0]))[:5]:
-            rows.append((LABELS[harness], name, unique, copy))
+        for name, (exact, approx, unique) in sorted(kinds.items(), key=lambda item: (-item[1][2], item[0]))[:5]:
+            rows.append((LABELS[harness], name, unique, approx, exact))
     return table(TOP_HEADER, rows)
 
 
@@ -136,16 +136,22 @@ def render(v1, v2) -> str:
         [
             "### Loss accounting",
             "",
-            "Text that a parser does not read is split into a copy (the same text is also in content it kept) and",
-            "unique text (truly lost). A copy is an exact string or a line-by-line match of at least 90%, so the",
-            "unique figure is an upper bound on real loss.",
+            "Unread text is shown as shares of that population's text bytes. An exact copy is a string that is also in",
+            "content the parser kept. An approximate copy has at least 90% of its line bytes in kept content, a",
+            "heuristic that can hide a missing long line. Not matched has no exact or approximate counterpart.",
+            "Loss lies between Not matched and Not matched plus Approximate copy.",
             "",
             loss_table(v2),
+            "",
+            "Path-based STS text share, which the held-out loss rows above are measured against:",
+            "",
+            retention_table(v2),
             "",
             "#### What the normalizer writes against what its mapping reads",
             "",
             "The path-based STS share counts bytes at mapped keys. This table counts what `normalize` wrote.",
-            "Without reasoning is what the old thinking bug wrote. The small gap left is empty strings.",
+            "Reasoning removed subtracts the reasoning bytes. For Claude Code that equals what the normalizer wrote",
+            "before the thinking fix (checked against the old code). Empty strings are left out of both sides.",
             "",
             conservation_table(v1, v2),
             "",
@@ -161,7 +167,7 @@ def render(v1, v2) -> str:
             "",
             alarm_table(v2),
             "",
-            "#### Biggest unique text the normalizer does not write",
+            "#### Biggest unmatched text the normalizer does not write (all sessions)",
             "",
             top_table(v2),
             "",

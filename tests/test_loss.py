@@ -7,11 +7,17 @@ from pathlib import Path
 from capturedrift.data import Record, Session
 from capturedrift.drift import CONTENT_MIN, changes
 from capturedrift.loss import (
+    APPROX,
+    EXACT,
+    PAYLOAD,
+    UNIQUE,
     Captured,
     conservation,
     emitted_bytes,
     kind_scores,
+    load_raw,
     main,
+    new_kinds,
     sidechain_records,
     split_loss,
     thinking_blocks,
@@ -19,7 +25,7 @@ from capturedrift.loss import (
     wilson,
 )
 from capturedrift.run import main as run_experiment
-from capturedrift.shape import kind, leaves, size
+from capturedrift.shape import kind, leaf_values, leaves, size
 from capturedrift.sts import mapped_keys, normalize
 from demo_loss import render
 
@@ -47,6 +53,13 @@ class ConservationTest(unittest.TestCase):
         result = conservation("claude", [pair])
         self.assertEqual(result["source"], result["emitted"])
         self.assertEqual(result["reasoning"], size(WORDS))
+
+    def test_doubled_output_does_not_conserve(self):
+        pair = session("1", [assistant(THOUGHT, TEXT)])
+        lines = normalize("claude", pair[1])
+        single = emitted_bytes("claude", lines)["emitted"]
+        self.assertEqual(emitted_bytes("claude", lines + lines[1:])["emitted"], 2 * single)
+        self.assertEqual(single, conservation("claude", [pair])["source"])
 
     def test_a_dropped_field_shows_as_missing_bytes(self):
         raw = assistant({"type": "thinking", "thinking": WORDS})
@@ -85,17 +98,22 @@ class DroppedByDesignTest(unittest.TestCase):
 
 
 class CopyTest(unittest.TestCase):
-    def test_exact_and_line_numbered_copies(self):
+    def test_exact_numbered_and_different_text(self):
         kept = Captured(["alpha beta gamma\ndelta epsilon zeta"])
-        self.assertTrue(kept.has("alpha beta gamma\ndelta epsilon zeta"))
-        self.assertTrue(kept.has("   1→alpha beta gamma\n   2→delta epsilon zeta"))
-        self.assertFalse(kept.has("something quite different"))
+        self.assertEqual(kept.match("alpha beta gamma\ndelta epsilon zeta"), EXACT)
+        self.assertEqual(kept.match("   1→alpha beta gamma\n   2→delta epsilon zeta"), APPROX)
+        self.assertEqual(kept.match("something quite different"), UNIQUE)
 
-    def test_split_loss_separates_copy_from_unique(self):
+    def test_short_matching_lines_do_not_hide_a_long_missing_line(self):
+        kept = Captured(["alpha beta gamma"])
+        text = "\n".join(["alpha beta gamma"] * 9 + ["delta epsilon " + "z" * 10000])
+        self.assertEqual(kept.match(text), UNIQUE)
+
+    def test_split_loss_separates_exact_copy_from_unmatched(self):
         user = {"type": "user", "message": {"content": [{"type": "tool_result", "content": WORDS}]}}
         user["toolUseResult"] = {"stdout": WORDS, "extra": "only here and nowhere else"}
         found = split_loss([user], "claude", mapped_keys("claude"))
-        self.assertEqual(found[("user", "toolUseResult:json")], [size(WORDS), size("only here and nowhere else")])
+        self.assertEqual(found[("user", "toolUseResult:json")], [size(WORDS), 0, size("only here and nowhere else")])
 
 
 class QuietTest(unittest.TestCase):
@@ -113,6 +131,19 @@ class QuietTest(unittest.TestCase):
         other = {"type": "user", "message": {"content": "hi"}}
         sessions = [session("1", [loud])[0], session("2", [other])[0]]
         self.assertEqual(went_quiet(sessions, "claude")["2"], [])
+
+
+class NewKindsTest(unittest.TestCase):
+    def test_only_kinds_no_earlier_version_has_count(self):
+        user = {"type": "user", "message": {"content": "hi"}}
+        found = new_kinds(
+            [
+                session("1", [user])[0],
+                session("2", [user, assistant(TEXT)])[0],
+                session("3", [user, assistant(TEXT, extra=1)])[0],
+            ]
+        )
+        self.assertEqual(found, {"1": 0, "2": 1, "3": 0})
 
 
 class IntervalTest(unittest.TestCase):
@@ -142,10 +173,24 @@ class PinnedDataTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             cls.result = main(out=Path(tmp) / "metrics-v2.json")
 
-    def test_normalize_keeps_what_the_mapping_reads(self):
+    def test_normalize_writes_the_mapped_content_and_nothing_twice(self):
+        """Non-empty content written equals mapped. An empty piece joined to others adds one 2-byte separator."""
+        empties = {}
+        for session, records in load_raw():
+            mapped = mapped_keys(session.harness)
+            key = (session.harness, session.version)
+            empties[key] = empties.get(key, 0) + sum(
+                1
+                for record in records
+                for path, value in leaf_values(session.harness, record)
+                if value == "" and path.endswith(PAYLOAD) and (kind(session.harness, record), path) in mapped
+            )
         for harness, data in self.result["harness"].items():
             for version, row in data["versions"].items():
-                self.assertGreaterEqual(row["emitted"] / row["source"], 0.997, (harness, version))
+                gap = row["emitted"] - row["source"]
+                self.assertTrue(0 <= gap <= 2 * empties[harness, version], (harness, version, gap))
+                if not empties[harness, version]:
+                    self.assertEqual(gap, 0)
 
     def test_reasoning_text_is_written_for_old_claude_versions(self):
         rows = self.result["harness"]["claude"]["versions"]
@@ -160,13 +205,14 @@ class PinnedDataTest(unittest.TestCase):
     def test_rendered_block_has_every_table(self):
         with tempfile.TemporaryDirectory() as tmp:
             text = render(run_experiment(out=Path(tmp) / "m.json"), self.result)
-        for title in ("Loss accounting", "Alarms, counted per record kind", "Biggest unique text"):
+        for title in ("Loss accounting", "Alarms, counted per record kind", "Biggest unmatched text"):
             self.assertIn(title, text)
         self.assertIn("| Claude Code | 2.1.126 |", text)
 
     def test_copy_and_unique_add_up_to_the_frozen_text_share(self):
         frozen = self.result["harness"]["claude"]["frozen"]
-        self.assertAlmostEqual(frozen["copy_share"] + frozen["unique_share"], 0.004246, places=5)
+        total = frozen["exact_share"] + frozen["approx_share"] + frozen["unique_share"]
+        self.assertAlmostEqual(total, 0.004246, places=5)
 
 
 if __name__ == "__main__":

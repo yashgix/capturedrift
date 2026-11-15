@@ -11,14 +11,18 @@ for example Claude's `toolUseResult`, which repeats the tool result already read
 ## What v2 adds
 - `shape.leaf_values(harness, record)`: the leaf walk that `leaves` already used, now yielding the raw values.
   `leaves` is unchanged in behaviour.
-- Conservation, per harness and version: content bytes at mapped keys (paths ending in text, thinking, content,
-  input, arguments or output) against content bytes `normalize` writes (`content`, `reasoningContent`, tool call
-  arguments, measured with `size`). Written without reasoning shows what the thinking bug wrote.
-- Copy and unique text, for the frozen parser's unseen keys on held-out sessions and for the STS mapping's unmapped keys
-  over all sessions. A string is a copy when it matches kept content exactly, or when at least 90% of its non-empty
-  lines do after stripping `N→` or `N<tab>` line-number prefixes. The rest is unique. Shares use the same total text
-  bytes as the v1 shares, so copy plus unique equals the v1 unseen text share.
+- Conservation, per harness and version: bytes of non-empty content at mapped keys (paths ending in text, thinking,
+  content, input, arguments or output) against non-empty content bytes `normalize` writes (`content`,
+  `reasoningContent`, tool call arguments, measured with `size`). An empty piece joined to other pieces adds one
+  2-byte separator, so written minus mapped is between 0 and 2 bytes per empty piece. Reasoning removed is an ablation.
+  For Claude it equals the output before the thinking fix.
+- Unread text in three buckets, for the frozen parser's unseen keys on held-out sessions and for the STS mapping's
+  unmapped keys, on held-out sessions and on all sessions: an exact copy (the string is in kept content verbatim), an
+  approximate copy (a heuristic: at least 90% of its line bytes, after stripping `N→` or `N<tab>` prefixes, are in kept
+  content) and not matched. Shares use the text bytes of the same population, so the three add up to the v1 unseen
+  share for the frozen parser. The path-based STS text share is given for held-out and all sessions.
 - Thinking blocks per Claude version, and how many have empty text.
+- Kinds new to the harness per version: record kinds no earlier version has.
 - Quiet keys: per version, keys with at least `CONTENT_MIN` text bytes in the version before, no text now, and whose
   record kind still occurs. Reported as counts, with a mapped-only count.
 - Alarm scores per record kind: a (version, kind) with new keys is one case. Wilson 95% intervals. The byte threshold
