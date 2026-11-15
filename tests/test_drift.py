@@ -239,17 +239,17 @@ class ScoreTest(unittest.TestCase):
         result = score(self.found, "any")
         self.assertEqual(
             [result[key] for key in ("key_tp", "key_fp", "key_fn", "version_tp", "version_fp", "version_fn")],
-            [2, 1, 1, 1, 1, 1],
+            [2, 2, 1, 1, 1, 1],
         )
-        self.assertEqual(result["key_precision"], share(2, 3))
+        self.assertEqual(result["key_precision"], 0.5)
         self.assertEqual(result["key_recall"], share(2, 3))
         self.assertEqual(result["version_precision"], 0.5)
         self.assertEqual(result["version_recall"], 0.5)
 
     def test_bytes_alarm(self):
         result = score(self.found, "bytes")
-        self.assertEqual([result[key] for key in ("key_tp", "key_fp", "key_fn")], [1, 1, 2])
-        self.assertEqual(result["key_precision"], 0.5)
+        self.assertEqual([result[key] for key in ("key_tp", "key_fp", "key_fn")], [1, 2, 2])
+        self.assertEqual(result["key_precision"], share(1, 3))
         self.assertEqual(result["key_recall"], share(1, 3))
         self.assertEqual(result["version_tp"], 1)
         self.assertEqual(result["version_fp"], 1)

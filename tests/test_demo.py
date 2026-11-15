@@ -212,7 +212,7 @@ class MainTest(unittest.TestCase):
             root = Path(tmp)
             results = root / "results"
             results.mkdir()
-            (results / "metrics.json").write_text(json.dumps(METRICS), encoding="utf-8")
+            (results / "metrics.json").write_text(json.dumps(summarize(fixture(), 4, 1000)), encoding="utf-8")
             template = root / "README.md"
             template.write_text("# title only\n", encoding="utf-8")
             with self.assertRaises(ValueError):
