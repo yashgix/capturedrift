@@ -90,13 +90,13 @@ def _string(value):
     return value if isinstance(value, str) else ""
 
 
-def _text_values(blocks, block_type):
+def _text_values(blocks, block_type, field="text"):
     if not isinstance(blocks, list):
         return []
     return [
-        block["text"]
+        block[field]
         for block in blocks
-        if isinstance(block, dict) and block.get("type") == block_type and isinstance(block.get("text"), str)
+        if isinstance(block, dict) and block.get("type") == block_type and isinstance(block.get(field), str)
     ]
 
 
@@ -191,7 +191,7 @@ def _claude_assistant(record, timestamp):
     if not isinstance(blocks, list):
         return []
     texts = _text_values(blocks, "text")
-    thoughts = _text_values(blocks, "thinking")
+    thoughts = _text_values(blocks, "thinking", "thinking")
     tool_uses = [block for block in blocks if isinstance(block, dict) and block.get("type") == "tool_use"]
     if not texts and not thoughts and not tool_uses:
         return []
