@@ -170,8 +170,10 @@ def render(metrics, sessions: list[Session]) -> str:
         [
             "### Results",
             "",
-            "A parser frozen at each harness's cutoff, measured on the versions that came after it. Shares are over",
-            "the held-out (test) sessions; `unseen` means a key that no training session contains.",
+            "A parser frozen at each harness's cutoff, measured on the versions that came after it. Frozen shares are",
+            "over the held-out (test) sessions; `unseen` means a key that no training session contains. The STS text",
+            "share is over all of a harness's sessions in the per-harness table, and over a version's sessions in the",
+            "per-version table.",
             "",
             "#### Per harness",
             "",
