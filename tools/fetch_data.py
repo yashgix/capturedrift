@@ -60,7 +60,7 @@ def _sub(pattern, replace, raw):
     return pattern.sub(counted, raw), changed
 
 
-# Credential shapes, as Arcturus's runner checks them (runner/gateway.py SECRET); none may stay in the data.
+# Credential shapes, as a credential scan checks them; none may stay in the data.
 SECRET = re.compile(
     r"sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{30,}|xox[abpr]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}"
     r"|-----BEGIN [A-Z ]*PRIVATE KEY-----|[A-Z0-9_]*(?:TOKEN|SECRET|API_KEY|PASSWORD)=[^\s\"']{8,}"

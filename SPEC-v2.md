@@ -1,6 +1,6 @@
 # capturedrift v2: loss accounting
 
-v1 (`SPEC.md`) is unchanged and its acceptance tests still pass. v2 adds a second result file,
+v1 (the original specification, not published) is unchanged and its acceptance tests still pass. v2 adds a second result file,
 `results/metrics-v2.json`, written by `python -m capturedrift.loss`. Nothing in `results/metrics.json` changes.
 
 ## Why

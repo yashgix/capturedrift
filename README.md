@@ -1,12 +1,27 @@
 # capturedrift
 
-Milestone 1: a structure-only measurement of what a coding-agent session parser, frozen at one CLI version, keeps
-and silently drops on the versions that come after it.
+Detects silent data loss when coding-agent session logs from many Claude Code and Codex versions are captured into
+a standard trace schema. Write-up with charts: https://yashgix.github.io/capturedrift/
 
-An importer written against one CLI version keeps running on later versions — it just stops recognising whatever
+An importer written against one CLI version keeps running on later versions, and it stops recognising whatever
 arrives in shapes it has never seen. Nothing fails: no exception, no dropped-file warning, no log line. The unknown
 keys are simply never read. capturedrift puts a number on that, on real public Claude Code and Codex session files
-that span many CLI versions.
+(from public Hugging Face datasets, redacted) that span 22 and 4 CLI versions.
+
+**Main result.** For Codex, a parser frozen at its training version leaves 23.2% to 27.1% of the text in held-out
+sessions unread and not found elsewhere in what it kept. For Claude Code the same range is 0.3% to 0.4%, and a fixed
+Hugging Face STS mapping misses 10.8% to 32.4% of Claude's held-out text and 11.7% to 15.8% of Codex's. The range
+runs from "not matched" to "not matched plus approximate copy", because the approximate-copy match is a heuristic.
+The three simple alarms are noisy: precision is low and the 95% intervals are wide (tables below). The data is small
+(40 sessions, five of them Codex), so these numbers illustrate a method and do not estimate a population.
+
+```text
+$ python -m capturedrift audit --harness codex data/sessions/codex/<dataset>/<rollout>.jsonl
+{"keys": 166, "kinds": 18, "records": 2046, "sessions": 1, "sts_byte_share": 0.635644,
+ "sts_text_share": 0.795578, "versions": ["0.140.0-alpha.2"]}
+```
+
+(`audit` prints the real output as indented JSON, shown on one line here. It never prints session text.)
 
 ## The question
 
@@ -68,15 +83,17 @@ whoever published them; the data here is what was published, once redacted as ab
 ## Running it
 
 ```bash
-make test                                        # unittest suite
-make lint                                        # ruff check + format check
-make data-check                                  # verify the pinned files
-python experiment.py --out results/metrics.json  # run the experiment
-python demo.py                                   # one-line summary of the metrics
-make readme                                      # re-render the results block below
+make test         # unittest suite, own and acceptance tests (Python 3.14, no dependencies)
+make lint         # ruff check and format check
+make data-check   # verify the pinned files against data/MANIFEST.json, no network
+make experiment   # rerun the v1 experiment into results/metrics.json
+make loss         # rerun the v2 loss accounting into results/metrics-v2.json
+make readme       # re-render the two generated result blocks below
+make page         # re-render the generated blocks of docs/index.html
+python demo.py    # one-line summary of the metrics
 ```
 
-`python experiment.py --out PATH [--data DIR]` writes the metrics as JSON with sorted keys, indent 1 and a final
+Both reruns reproduce `results/` and the generated README blocks byte for byte. `python experiment.py --out PATH [--data DIR]` writes the metrics as JSON with sorted keys, indent 1 and a final
 newline. Two runs produce byte-identical files.
 
 ## Command line
@@ -285,10 +302,8 @@ user names.
 
 ```
 capturedrift/shape.py   byte sizes, event kinds, key paths, opaque subtrees
-their data
 capturedrift/data.py    records, sessions, manifest loading and ordering
 capturedrift/sts.py     the fixed STS normalizer
-their data
 capturedrift/drift.py   unseen shares, version changes, alarms, threshold tuning
 capturedrift/run.py     the 43 experiment metrics
 capturedrift/__main__.py  the audit and normalize subcommands
@@ -297,6 +312,7 @@ demo.py                 summary line and README renderer
 tests/                  unittest suite
 docs/DESIGN.md          method and trade-offs
 docs/INTERVIEW.md       five-minute explanation
+SPEC-v2.md              what version 2 adds
 ```
 
 ## Limits
@@ -337,7 +353,9 @@ docs/INTERVIEW.md       five-minute explanation
 - **Published data only.** Several datasets passed through their uploaders' own anonymization; nothing here can
   undo or improve that.
 
-## Data sources and licenses
+## Data and licenses
+
+The code is MIT licensed (`LICENSE`).
 
 Every session file comes from one of the datasets below, at the pinned revision, under the license its card
 states. CC-BY-4.0 sources are attributed here as that license requires; the full revision hashes and per-file
@@ -361,3 +379,13 @@ provenance are in `data/MANIFEST.json`, the license texts in `data/licenses/` an
 Session contents may include code, logs and third-party material carrying its own terms; anyone reusing these
 files is responsible for checking that their use complies. This project is not affiliated with or endorsed by any
 of the tools or datasets named here; product names identify the systems that produced the traces.
+
+Redistribution: every dataset is public, ungated and carries an open license (MIT, Apache-2.0, CC0-1.0 or
+CC-BY-4.0) that allows copying with attribution, checked on each dataset's Hugging Face page and card on 15 Nov 2026.
+The files here are the published sessions after the redaction described above. Some datasets say their own
+anonymization is best effort. If a dataset owner asks for removal, `tools/fetch_data.py` can rebuild the rest from the
+manifest, and the pinned files can be dropped from the repository and its history.
+
+## Built with
+
+Built with Arcturus (Claude Code builders, Codex review); reviewed and verified by hand.

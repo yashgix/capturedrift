@@ -1,4 +1,4 @@
-.PHONY: test lint data-check experiment loss readme
+.PHONY: test lint data-check experiment loss readme page
 
 test:
 	python3 -m unittest discover -s tests
@@ -18,3 +18,6 @@ loss:
 readme:
 	python3 demo.py --readme README.md --out README.md
 	python3 demo_loss.py
+
+page:
+	python3 tools/build_page.py
