@@ -99,6 +99,15 @@ def alarms(v2) -> str:
     )
 
 
+def headline(v2) -> str:
+    """The README headline: each harness's loss range for the frozen parser and for the STS mapping."""
+    return "\n".join(
+        f"- {LABELS[harness]}: frozen parser {loss_range(v2['harness'][harness]['frozen'])}, "
+        f"STS mapping {loss_range(v2['harness'][harness]['sts_dropped_held_out'])}"
+        for harness in HARNESSES
+    )
+
+
 def main():
     v1 = json.loads((ROOT / "results/metrics.json").read_text(encoding="utf-8"))
     v2 = json.loads((ROOT / "results/metrics-v2.json").read_text(encoding="utf-8"))
@@ -113,6 +122,8 @@ def main():
     for name, block in blocks.items():
         text = replace_block(text, block, name)
     page.write_text(text, encoding="utf-8")
+    readme = ROOT / "README.md"
+    readme.write_text(replace_block(readme.read_text(encoding="utf-8"), headline(v2), "headline"), encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -8,10 +8,14 @@ arrives in shapes it has never seen. Nothing fails: no exception, no dropped-fil
 keys are simply never read. capturedrift puts a number on that, on real public Claude Code and Codex session files
 (from public Hugging Face datasets, redacted) that span 22 and 4 CLI versions.
 
-**Main result.** For Codex, a parser frozen at its training version leaves 23.2% to 27.1% of the text in held-out
-sessions unread and not found elsewhere in what it kept. For Claude Code the same range is 0.3% to 0.4%, and a fixed
-Hugging Face STS mapping misses 10.8% to 32.4% of Claude's held-out text and 11.7% to 15.8% of Codex's. The range
-runs from "not matched" to "not matched plus approximate copy", because the approximate-copy match is a heuristic.
+**Main result.** Loss is a range, from "not matched" to "not matched plus approximate copy", because the
+approximate-copy match is a heuristic. Shares are of held-out text.
+
+<!-- headline:start -->
+- Claude Code: frozen parser 0.3% to 0.4%, STS mapping 10.8% to 32.4%
+- Codex: frozen parser 23.2% to 27.1%, STS mapping 11.7% to 15.8%
+<!-- headline:end -->
+
 The three simple alarms are noisy: precision is low and the 95% intervals are wide (tables below). The data is small
 (40 sessions, five of them Codex), so these numbers illustrate a method and do not estimate a population.
 
@@ -311,7 +315,6 @@ experiment.py           run the experiment
 demo.py                 summary line and README renderer
 tests/                  unittest suite
 docs/DESIGN.md          method and trade-offs
-docs/INTERVIEW.md       five-minute explanation
 SPEC-v2.md              what version 2 adds
 ```
 
