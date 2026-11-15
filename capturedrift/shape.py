@@ -69,42 +69,42 @@ def kind(harness, record):
 def leaves(harness, record):
     """{key path: (bytes, text bytes)} for every leaf in record, summing repeated paths."""
     out = {}
-    _walk(record, "", _OPAQUE.get(harness, frozenset()), out)
+    for path, value in leaf_values(harness, record):
+        _add(out, path, size(value), text_size(value))
     return out
 
 
-def _walk(value, path, opaque, out):
+def leaf_values(harness, record):
+    """Yield (key path, raw value) for every leaf in record; repeated paths yield repeatedly."""
+    yield from _walk(record, "", _OPAQUE.get(harness, frozenset()))
+
+
+def _walk(value, path, opaque):
     if path in opaque:
-        _add(out, path + ":json", size(value), text_size(value))
-        return
-    if isinstance(value, dict):
-        if not value:
-            _add(out, path + ":{}", 2, 0)
-            return
+        yield path + ":json", value
+    elif isinstance(value, dict) and not value:
+        yield path + ":{}", value
+    elif isinstance(value, dict):
         for key, child in value.items():
             segment = key if _FIELD.fullmatch(key) else "*"
-            child_path = path + "." + segment if path else segment
-            _walk(child, child_path, opaque, out)
-        return
-    if isinstance(value, list):
-        if not value:
-            _add(out, path + ":[]", 2, 0)
-            return
+            yield from _walk(child, path + "." + segment if path else segment, opaque)
+    elif isinstance(value, list) and not value:
+        yield path + ":[]", value
+    elif isinstance(value, list):
         for item in value:
-            _walk(item, path + "[]" + _tag(item), opaque, out)
-        return
-    if isinstance(value, bool):
-        leaf = "bool"
-    elif isinstance(value, (int, float)):
-        leaf = "num"
-    elif isinstance(value, str):
-        leaf = "str"
-    elif value is None:
-        leaf = "null"
+            yield from _walk(item, path + "[]" + _tag(item), opaque)
     else:
-        leaf = "?"
-    n = size(value)
-    _add(out, path + ":" + leaf, n, n if is_text(value) else 0)
+        yield path + ":" + _scalar(value), value
+
+
+def _scalar(value):
+    if isinstance(value, bool):
+        return "bool"
+    if isinstance(value, (int, float)):
+        return "num"
+    if isinstance(value, str):
+        return "str"
+    return "null" if value is None else "?"
 
 
 def _tag(value):
