@@ -99,8 +99,7 @@ def load(data_dir: Path | str = DATA_DIR) -> list[Session]:
     directory = Path(data_dir)
     entries = manifest(directory)["files"]
     sessions = [
-        load_session(name, entry["harness"], entry["source"], directory / name)
-        for name, entry in entries.items()
+        load_session(name, entry["harness"], entry["source"], directory / name) for name, entry in entries.items()
     ]
     sessions.sort(key=_order)
     return sessions

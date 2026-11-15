@@ -136,9 +136,7 @@ class PinnedDataTest(unittest.TestCase):
             raise AssertionError(f"pinned data missing at {DATA_DIR}; run python tools/fetch_data.py")
         cls.entries = manifest()["files"]
         cls.sessions = load()
-        cls.result = summarize(
-            cls.sessions, len(cls.entries), sum(entry["bytes"] for entry in cls.entries.values())
-        )
+        cls.result = summarize(cls.sessions, len(cls.entries), sum(entry["bytes"] for entry in cls.entries.values()))
 
     def test_metric_names_and_count(self):
         self.assertEqual(set(self.result), METRICS)
@@ -203,8 +201,7 @@ class PinnedDataTest(unittest.TestCase):
 
     def test_threshold_tuned_on_training_versions_only(self):
         trains = [
-            [item for item in self.sessions if item.harness == harness and is_train(item)]
-            for harness in HARNESSES
+            [item for item in self.sessions if item.harness == harness and is_train(item)] for harness in HARNESSES
         ]
         best, scores = tune_bytes_min(trains)
         self.assertEqual(self.result["bytes_min"], best)

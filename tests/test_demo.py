@@ -12,7 +12,6 @@ from capturedrift.drift import ALARMS, CUTOFF
 from capturedrift.run import summarize
 from demo import main, percent, ratio, render, replace_block, summary, table, version_names
 
-
 METRICS = {
     "data_files": 40,
     "records": [10, 5],
@@ -56,8 +55,16 @@ def write_data(directory):
     entries = {
         "sessions/claude/train.jsonl": ("claude", "2.1.100", {"type": "user", "version": "2.1.100"}),
         "sessions/claude/test.jsonl": ("claude", "2.1.200", {"type": "user", "version": "2.1.200"}),
-        "sessions/codex/train.jsonl": ("codex", "0.100.0", {"type": "session_meta", "payload": {"cli_version": "0.100.0"}}),
-        "sessions/codex/test.jsonl": ("codex", "0.140.0", {"type": "session_meta", "payload": {"cli_version": "0.140.0"}}),
+        "sessions/codex/train.jsonl": (
+            "codex",
+            "0.100.0",
+            {"type": "session_meta", "payload": {"cli_version": "0.100.0"}},
+        ),
+        "sessions/codex/test.jsonl": (
+            "codex",
+            "0.140.0",
+            {"type": "session_meta", "payload": {"cli_version": "0.140.0"}},
+        ),
     }
     files = {}
     for name, (harness, version, record) in entries.items():

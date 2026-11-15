@@ -1,7 +1,7 @@
 """Normalize raw session records into the Session Traces Simple Format."""
 
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from .shape import kind
 
@@ -63,7 +63,7 @@ MAPPED = {
     },
 }
 
-_EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
+_EPOCH = datetime(1970, 1, 1, tzinfo=UTC)
 _MILLISECOND = timedelta(milliseconds=1)
 _HARNESS = {"claude": "claude-code", "codex": "codex"}
 
@@ -82,7 +82,7 @@ def epoch_ms(stamp):
     except ValueError:
         return None
     if value.tzinfo is None:
-        value = value.replace(tzinfo=timezone.utc)
+        value = value.replace(tzinfo=UTC)
     return (value - _EPOCH) // _MILLISECOND
 
 

@@ -185,7 +185,6 @@ class PinnedDataTest(unittest.TestCase):
 
     def test_load_is_sorted(self):
         keys = [
-            (session.harness, version_key(session.version), session.start, session.name)
-            for session in self.sessions
+            (session.harness, version_key(session.version), session.start, session.name) for session in self.sessions
         ]
         self.assertEqual(keys, sorted(keys))
