@@ -1,4 +1,4 @@
-.PHONY: test lint data-check experiment readme
+.PHONY: test lint data-check experiment loss readme
 
 test:
 	python3 -m unittest discover -s tests
@@ -12,5 +12,9 @@ data-check:
 experiment:
 	python3 experiment.py --out results/metrics.json
 
+loss:
+	python3 -m capturedrift.loss --out results/metrics-v2.json
+
 readme:
 	python3 demo.py --readme README.md --out README.md
+	python3 demo_loss.py

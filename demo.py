@@ -12,8 +12,6 @@ from capturedrift import DATA_DIR, HARNESSES
 from capturedrift.data import Session, load
 from capturedrift.drift import ALARMS, CUTOFF, top_unseen, versions
 
-START = "<!-- results:start -->"
-END = "<!-- results:end -->"
 LABELS = {"claude": "Claude Code", "codex": "Codex"}
 HARNESS_HEADER = (
     "Harness",
@@ -192,13 +190,14 @@ def render(metrics, sessions: list[Session]) -> str:
     )
 
 
-def replace_block(text: str, block: str) -> str:
-    """text with the region between the results markers replaced by block, everything else untouched."""
-    start = text.find(START)
-    end = text.find(END)
+def replace_block(text: str, block: str, marker: str = "results") -> str:
+    """text with the region between the <!-- marker:start --> and <!-- marker:end --> lines replaced by block."""
+    first, last = f"<!-- {marker}:start -->", f"<!-- {marker}:end -->"
+    start = text.find(first)
+    end = text.find(last)
     if start < 0 or end < 0 or end < start:
-        raise ValueError(f"the README needs {START} before {END}")
-    head = text[: start + len(START)]
+        raise ValueError(f"the README needs {first} before {last}")
+    head = text[: start + len(first)]
     return head + "\n" + block.strip("\n") + "\n" + text[end:]
 
 

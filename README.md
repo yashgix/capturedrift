@@ -29,6 +29,10 @@ frozen parser can see. It is a measurement, not a claim about any particular pro
    actually carry text content on held-out version changes. The one tunable threshold is chosen on training-period
    version changes only.
 
+4. **Loss accounting (version 2).** Which unread text is only a copy of content the parser kept and which is
+   truly lost, what `normalize` actually writes against what its mapping reads, which known keys go quiet, and
+   the alarms counted per record kind with intervals. See `SPEC-v2.md`.
+
 Everything is deterministic and needs neither network nor model calls.
 
 ## Data
@@ -174,6 +178,92 @@ the held-out (test) sessions; `unseen` means a key that no training session cont
 | Codex | event_msg/web_search_end | `payload.results[]<text_result>.snippet:str` | 5343 | 5291 |
 <!-- results:end -->
 
+<!-- loss:start -->
+### Loss accounting
+
+Text that a parser does not read is split into a copy (the same text is also in content it kept) and
+unique text (truly lost). A copy is an exact string or a line-by-line match of at least 90%, so the
+unique figure is an upper bound on real loss.
+
+| Harness | Parser | Copy of kept content | Unique, truly lost |
+|---|---|---|---|
+| Claude Code | Frozen at the cutoff, held-out text | 0.2% | 0.3% |
+| Claude Code | STS normalizer, all text | 45.4% | 10.6% |
+| Codex | Frozen at the cutoff, held-out text | 4.9% | 24.6% |
+| Codex | STS normalizer, all text | 8.9% | 11.6% |
+
+#### What the normalizer writes against what its mapping reads
+
+The path-based STS share counts bytes at mapped keys. This table counts what `normalize` wrote.
+Without reasoning is what the old thinking bug wrote. The small gap left is empty strings.
+
+| Harness | Content bytes mapped | Written by normalize | Written / mapped | Written without reasoning | Path-based STS bytes | Written content, share of bytes |
+|---|---|---|---|---|---|---|
+| Claude Code | 10359510 | 10358502 | 100.0% | 95.3% | 29.0% | 27.3% |
+| Codex | 3212434 | 3212434 | 100.0% | 99.9% | 33.1% | 31.9% |
+
+| Harness | Version | Written / mapped | Without reasoning | Thinking blocks empty | Keys gone quiet (mapped) | New kinds | New keys in user or assistant |
+|---|---|---|---|---|---|---|---|
+| Claude Code | 2.1.114 | 100.0% | 80.2% | 0 of 98 | 0 | 0 | 0 |
+| Claude Code | 2.1.123 | 100.0% | 67.7% | 10 of 180 | 0 | 3 | 1 |
+| Claude Code | 2.1.126 | 100.0% | 100.0% | 12 of 12 | 1 | 12 | 8 |
+| Claude Code | 2.1.131 | 100.0% | 100.0% | - | 1 | 5 | 5 |
+| Claude Code | 2.1.143 | 100.0% | 100.0% | 111 of 111 | 0 | 9 | 11 |
+| Claude Code | 2.1.144 | 100.0% | 100.0% | - | 0 | 2 | 0 |
+| Claude Code | 2.1.145 | 100.0% | 100.0% | - | 0 | 1 | 0 |
+| Claude Code | 2.1.158 | 100.0% | 100.0% | - | 2 | 3 | 0 |
+| Claude Code | 2.1.159 | 100.0% | 100.0% | 7 of 7 | 1 | 2 | 0 |
+| Claude Code | 2.1.160 | 100.0% | 100.0% | 4 of 4 | 0 | 0 | 0 |
+| Claude Code | 2.1.162 | 100.0% | 100.0% | - | 1 | 3 | 4 |
+| Claude Code | 2.1.167 | 100.0% | 100.0% | - | 1 | 0 | 0 |
+| Claude Code | 2.1.168 | 100.0% | 100.0% | - | 0 | 5 | 0 |
+| Claude Code | 2.1.169 | 99.9% | 99.9% | 66 of 66 | 1 | 3 | 0 |
+| Claude Code | 2.1.170 | 100.0% | 100.0% | 29 of 29 | 0 | 1 | 1 |
+| Claude Code | 2.1.172 | 99.8% | 99.8% | 22 of 22 | 1 | 1 | 0 |
+| Claude Code | 2.1.173 | 100.0% | 100.0% | 32 of 32 | 0 | 0 | 0 |
+| Claude Code | 2.1.174 | 99.9% | 99.9% | 18 of 18 | 0 | 1 | 0 |
+| Claude Code | 2.1.175 | 99.9% | 99.9% | 78 of 78 | 0 | 1 | 4 |
+| Claude Code | 2.1.176 | 100.0% | 100.0% | 47 of 47 | 0 | 1 | 1 |
+| Claude Code | 2.1.177 | 100.0% | 100.0% | 37 of 37 | 1 | 2 | 0 |
+| Claude Code | 2.1.220 | 100.0% | 100.0% | 31 of 31 | 1 | 5 | 3 |
+| Codex | 0.125.0 | 100.0% | 100.0% | - | 0 | 0 | 0 |
+| Codex | 0.140.0-alpha.2 | 100.0% | 100.0% | - | 0 | 9 | 0 |
+| Codex | 0.145.0 | 100.0% | 100.0% | - | 0 | 7 | 2 |
+| Codex | 0.147.0-alpha.1.2 | 100.0% | 99.7% | - | 0 | 12 | 19 |
+
+#### Alarms, counted per record kind
+
+A case is a record kind with new keys in a held-out version. The 95% intervals are Wilson intervals.
+Of the new content keys in held-out versions, 0 of 6 (Claude Code) and 3 of 18 (Codex) sit in conversation records, the kinds the
+STS mapping reads. The rest are injected records such as attachments and system events.
+
+| Harness | Alarm | Kind tp | fp | fn | Precision (95%) | Recall (95%) |
+|---|---|---|---|---|---|---|
+| Claude Code | any | 4 | 20 | 1 | 0.17 (0.07 to 0.36) | 0.80 (0.38 to 0.96) |
+| Claude Code | bytes | 4 | 7 | 1 | 0.36 (0.15 to 0.65) | 0.80 (0.38 to 0.96) |
+| Claude Code | kind | 3 | 4 | 2 | 0.43 (0.16 to 0.75) | 0.60 (0.23 to 0.88) |
+| Codex | any | 13 | 15 | 0 | 0.46 (0.30 to 0.64) | 1.00 (0.77 to 1.00) |
+| Codex | bytes | 13 | 7 | 0 | 0.65 (0.43 to 0.82) | 1.00 (0.77 to 1.00) |
+| Codex | kind | 7 | 2 | 6 | 0.78 (0.45 to 0.94) | 0.54 (0.29 to 0.77) |
+
+#### Biggest unique text the normalizer does not write
+
+| Harness | Kind | Unique text bytes | Copy text bytes |
+|---|---|---|---|
+| Claude Code | user | 1681704 | 9868055 |
+| Claude Code | attachment/skill_listing | 166008 | 0 |
+| Claude Code | attachment/hook_success | 149679 | 0 |
+| Claude Code | last-prompt | 89759 | 33969 |
+| Claude Code | attachment/diagnostics | 73822 | 0 |
+| Codex | session_meta | 404066 | 0 |
+| Codex | event_msg/patch_apply_end | 33576 | 44120 |
+| Codex | turn_context | 14070 | 2372 |
+| Codex | event_msg/web_search_end | 7512 | 92 |
+| Codex | event_msg/mcp_tool_call_end | 6692 | 90995 |
+
+Claude Code records marked as subagent work (isSidechain): 0 in this data.
+<!-- loss:end -->
+
 ## Structure only
 
 The experiment, the `audit` command and this README work on field paths and counts. They read session files to
@@ -214,8 +304,19 @@ docs/INTERVIEW.md       five-minute explanation
   simple. Images and encrypted reasoning count as bytes, not text.
 - **Duplicated content.** Some dropped content appears elsewhere — Claude's `toolUseResult` repeats tool results
   — so "dropped" is an upper bound on loss.
-- **STS share is by path.** The STS byte and text shares count the leaves at mapped key paths. They do not measure
-  what `normalize` writes, so a normalizer bug does not move them. A check on the written output is planned.
+- **STS share is by path.** The v1 STS byte and text shares count the leaves at mapped key paths. They do not
+  measure what `normalize` writes, so the thinking bug did not move them. The loss accounting counts what
+  `normalize` writes, and a test fails if that drifts from what the mapping reads.
+- **Copies are matched on text.** A string counts as a copy when it appears exactly in kept content or at least
+  90% of its lines do (after removing line-number prefixes). Reworded or reformatted copies count as unique, so
+  the unique loss is an upper bound.
+- **Quiet keys are noisy.** A known key that stops carrying text is only a hint: with at most two sessions per
+  version, a feature simply not used looks the same. The mapped quiet keys are the ones that matter for STS.
+- **Thinking text going empty is confounded with source.** Thinking blocks are all empty from 2.1.126, but the
+  datasets, models and settings also change. The data cannot say which one caused it.
+- **No subagent records in this data.** No record has `isSidechain` true, so how a subagent thread is captured
+  is untested on real data. `normalize` writes such records like any other, with no marker, and a test pins that.
+- **Codex compacted history is not written.** `compacted` records are dropped by the STS mapping, and a test pins it.
 - **Fixed mapping, chosen late.** The STS mapping was written after looking at all versions, so its share is a
   best case for a fixed mapping.
 - **Alarms are deliberately myopic.** Each alarm sees only the first session of a version, which is all a live

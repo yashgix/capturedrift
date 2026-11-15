@@ -17,3 +17,4 @@ jobs:
       - run: make data-check
       - run: make test
       - run: make experiment
+      - run: make loss

@@ -1,0 +1,723 @@
+{
+ "bytes_min": 200,
+ "harness": {
+  "claude": {
+   "content_keys": {
+    "conversation": 0,
+    "injected": 6
+   },
+   "frozen": {
+    "copy": 21234,
+    "copy_share": 0.001697,
+    "kinds": {
+     "attachment/agent_listing_delta": [
+      0,
+      4646
+     ],
+     "attachment/invoked_skills": [
+      21100,
+      0
+     ],
+     "attachment/nested_memory": [
+      0,
+      3116
+     ],
+     "system/api_error": [
+      0,
+      3080
+     ],
+     "system/local_command": [
+      134,
+      21049
+     ]
+    },
+    "unique": 31891,
+    "unique_share": 0.002549
+   },
+   "kind_alarms": {
+    "any": {
+     "fn": 1,
+     "fp": 20,
+     "precision": [
+      0.166667,
+      [
+       0.066786,
+       0.358535
+      ]
+     ],
+     "recall": [
+      0.8,
+      [
+       0.375528,
+       0.963777
+      ]
+     ],
+     "tp": 4
+    },
+    "bytes": {
+     "fn": 1,
+     "fp": 7,
+     "precision": [
+      0.363636,
+      [
+       0.151662,
+       0.646203
+      ]
+     ],
+     "recall": [
+      0.8,
+      [
+       0.375528,
+       0.963777
+      ]
+     ],
+     "tp": 4
+    },
+    "kind": {
+     "fn": 2,
+     "fp": 4,
+     "precision": [
+      0.428571,
+      [
+       0.158217,
+       0.749546
+      ]
+     ],
+     "recall": [
+      0.6,
+      [
+       0.23072,
+       0.882382
+      ]
+     ],
+     "tp": 3
+    }
+   },
+   "sidechain_records": 0,
+   "sts_dropped": {
+    "copy": 10355124,
+    "copy_share": 0.453736,
+    "kinds": {
+     "ai-title": [
+      0,
+      39317
+     ],
+     "attachment/agent_listing_delta": [
+      0,
+      4646
+     ],
+     "attachment/diagnostics": [
+      0,
+      73822
+     ],
+     "attachment/edited_text_file": [
+      46558,
+      26981
+     ],
+     "attachment/file": [
+      253599,
+      53305
+     ],
+     "attachment/hook_additional_context": [
+      0,
+      51766
+     ],
+     "attachment/hook_success": [
+      0,
+      149679
+     ],
+     "attachment/invoked_skills": [
+      21100,
+      0
+     ],
+     "attachment/mcp_instructions_delta": [
+      0,
+      4274
+     ],
+     "attachment/nested_memory": [
+      0,
+      3116
+     ],
+     "attachment/queued_command": [
+      17278,
+      19264
+     ],
+     "attachment/skill_listing": [
+      0,
+      166008
+     ],
+     "attachment/task_reminder": [
+      1526,
+      0
+     ],
+     "attachment/todo_reminder": [
+      106595,
+      0
+     ],
+     "last-prompt": [
+      33969,
+      89759
+     ],
+     "queue-operation": [
+      6310,
+      14761
+     ],
+     "system/api_error": [
+      0,
+      3704
+     ],
+     "system/away_summary": [
+      0,
+      4334
+     ],
+     "system/local_command": [
+      134,
+      21049
+     ],
+     "system/scheduled_task_fire": [
+      0,
+      90
+     ],
+     "system/stop_hook_summary": [
+      0,
+      2716
+     ],
+     "user": [
+      9868055,
+      1681704
+     ]
+    },
+    "unique": 2410295,
+    "unique_share": 0.105613
+   },
+   "versions": {
+    "2.1.114": {
+     "bytes": 2703565,
+     "emitted": 1031609,
+     "new_conversation_keys": 0,
+     "new_kinds": 0,
+     "quiet_keys": 0,
+     "quiet_mapped_keys": 0,
+     "reasoning": 204463,
+     "sessions": 2,
+     "source": 1031609,
+     "thinking_blocks": 98,
+     "thinking_empty": 0
+    },
+    "2.1.123": {
+     "bytes": 1973156,
+     "emitted": 865111,
+     "new_conversation_keys": 1,
+     "new_kinds": 3,
+     "quiet_keys": 0,
+     "quiet_mapped_keys": 0,
+     "reasoning": 279407,
+     "sessions": 2,
+     "source": 865131,
+     "thinking_blocks": 180,
+     "thinking_empty": 10
+    },
+    "2.1.126": {
+     "bytes": 250429,
+     "emitted": 75314,
+     "new_conversation_keys": 8,
+     "new_kinds": 12,
+     "quiet_keys": 1,
+     "quiet_mapped_keys": 1,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 75338,
+     "thinking_blocks": 12,
+     "thinking_empty": 12
+    },
+    "2.1.131": {
+     "bytes": 2425434,
+     "emitted": 742427,
+     "new_conversation_keys": 5,
+     "new_kinds": 5,
+     "quiet_keys": 3,
+     "quiet_mapped_keys": 1,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 742427,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    },
+    "2.1.143": {
+     "bytes": 2726709,
+     "emitted": 633787,
+     "new_conversation_keys": 11,
+     "new_kinds": 9,
+     "quiet_keys": 1,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 634009,
+     "thinking_blocks": 111,
+     "thinking_empty": 111
+    },
+    "2.1.144": {
+     "bytes": 2214147,
+     "emitted": 548474,
+     "new_conversation_keys": 0,
+     "new_kinds": 2,
+     "quiet_keys": 2,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 548474,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    },
+    "2.1.145": {
+     "bytes": 3903754,
+     "emitted": 918855,
+     "new_conversation_keys": 0,
+     "new_kinds": 1,
+     "quiet_keys": 0,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 918855,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    },
+    "2.1.158": {
+     "bytes": 1467965,
+     "emitted": 244344,
+     "new_conversation_keys": 0,
+     "new_kinds": 3,
+     "quiet_keys": 3,
+     "quiet_mapped_keys": 2,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 244344,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    },
+    "2.1.159": {
+     "bytes": 104353,
+     "emitted": 33639,
+     "new_conversation_keys": 0,
+     "new_kinds": 2,
+     "quiet_keys": 1,
+     "quiet_mapped_keys": 1,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 33653,
+     "thinking_blocks": 7,
+     "thinking_empty": 7
+    },
+    "2.1.160": {
+     "bytes": 91956,
+     "emitted": 22328,
+     "new_conversation_keys": 0,
+     "new_kinds": 0,
+     "quiet_keys": 0,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 22336,
+     "thinking_blocks": 4,
+     "thinking_empty": 4
+    },
+    "2.1.162": {
+     "bytes": 4282610,
+     "emitted": 1306870,
+     "new_conversation_keys": 4,
+     "new_kinds": 3,
+     "quiet_keys": 1,
+     "quiet_mapped_keys": 1,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 1306870,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    },
+    "2.1.167": {
+     "bytes": 951750,
+     "emitted": 362183,
+     "new_conversation_keys": 0,
+     "new_kinds": 0,
+     "quiet_keys": 2,
+     "quiet_mapped_keys": 1,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 362183,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    },
+    "2.1.168": {
+     "bytes": 4794873,
+     "emitted": 1678156,
+     "new_conversation_keys": 0,
+     "new_kinds": 5,
+     "quiet_keys": 0,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 1678156,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    },
+    "2.1.169": {
+     "bytes": 660391,
+     "emitted": 214616,
+     "new_conversation_keys": 0,
+     "new_kinds": 3,
+     "quiet_keys": 1,
+     "quiet_mapped_keys": 1,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 214748,
+     "thinking_blocks": 66,
+     "thinking_empty": 66
+    },
+    "2.1.170": {
+     "bytes": 604291,
+     "emitted": 201124,
+     "new_conversation_keys": 1,
+     "new_kinds": 1,
+     "quiet_keys": 1,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 201182,
+     "thinking_blocks": 29,
+     "thinking_empty": 29
+    },
+    "2.1.172": {
+     "bytes": 165065,
+     "emitted": 20292,
+     "new_conversation_keys": 0,
+     "new_kinds": 1,
+     "quiet_keys": 1,
+     "quiet_mapped_keys": 1,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 20336,
+     "thinking_blocks": 22,
+     "thinking_empty": 22
+    },
+    "2.1.173": {
+     "bytes": 1205421,
+     "emitted": 309943,
+     "new_conversation_keys": 0,
+     "new_kinds": 0,
+     "quiet_keys": 2,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 310007,
+     "thinking_blocks": 32,
+     "thinking_empty": 32
+    },
+    "2.1.174": {
+     "bytes": 191052,
+     "emitted": 56696,
+     "new_conversation_keys": 0,
+     "new_kinds": 1,
+     "quiet_keys": 0,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 56732,
+     "thinking_blocks": 18,
+     "thinking_empty": 18
+    },
+    "2.1.175": {
+     "bytes": 2410800,
+     "emitted": 295605,
+     "new_conversation_keys": 4,
+     "new_kinds": 1,
+     "quiet_keys": 0,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 295761,
+     "thinking_blocks": 78,
+     "thinking_empty": 78
+    },
+    "2.1.176": {
+     "bytes": 1409132,
+     "emitted": 217478,
+     "new_conversation_keys": 1,
+     "new_kinds": 1,
+     "quiet_keys": 0,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 217572,
+     "thinking_blocks": 47,
+     "thinking_empty": 47
+    },
+    "2.1.177": {
+     "bytes": 1640541,
+     "emitted": 394218,
+     "new_conversation_keys": 0,
+     "new_kinds": 2,
+     "quiet_keys": 3,
+     "quiet_mapped_keys": 1,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 394292,
+     "thinking_blocks": 37,
+     "thinking_empty": 37
+    },
+    "2.1.220": {
+     "bytes": 1787624,
+     "emitted": 185433,
+     "new_conversation_keys": 3,
+     "new_kinds": 5,
+     "quiet_keys": 1,
+     "quiet_mapped_keys": 1,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 185495,
+     "thinking_blocks": 31,
+     "thinking_empty": 31
+    }
+   }
+  },
+  "codex": {
+   "content_keys": {
+    "conversation": 3,
+    "injected": 15
+   },
+   "frozen": {
+    "copy": 162891,
+    "copy_share": 0.04869,
+    "kinds": {
+     "compacted": [
+      79105,
+      0
+     ],
+     "event_msg/agent_reasoning": [
+      0,
+      1861
+     ],
+     "event_msg/mcp_tool_call_end": [
+      0,
+      97687
+     ],
+     "event_msg/patch_apply_end": [
+      38883,
+      38813
+     ],
+     "event_msg/thread_settings_applied": [
+      0,
+      1876
+     ],
+     "event_msg/web_search_end": [
+      0,
+      7604
+     ],
+     "response_item/custom_tool_call_output": [
+      0,
+      522081
+     ],
+     "response_item/function_call_output": [
+      0,
+      26618
+     ],
+     "response_item/reasoning": [
+      0,
+      1861
+     ],
+     "response_item/web_search_call": [
+      0,
+      150
+     ],
+     "session_meta": [
+      0,
+      108750
+     ],
+     "turn_context": [
+      0,
+      14070
+     ],
+     "world_state": [
+      44903,
+      0
+     ]
+    },
+    "unique": 821371,
+    "unique_share": 0.245519
+   },
+   "kind_alarms": {
+    "any": {
+     "fn": 0,
+     "fp": 15,
+     "precision": [
+      0.464286,
+      [
+       0.295313,
+       0.641876
+      ]
+     ],
+     "recall": [
+      1.0,
+      [
+       0.771898,
+       1.0
+      ]
+     ],
+     "tp": 13
+    },
+    "bytes": {
+     "fn": 0,
+     "fp": 7,
+     "precision": [
+      0.65,
+      [
+       0.432851,
+       0.81881
+      ]
+     ],
+     "recall": [
+      1.0,
+      [
+       0.771898,
+       1.0
+      ]
+     ],
+     "tp": 13
+    },
+    "kind": {
+     "fn": 6,
+     "fp": 2,
+     "precision": [
+      0.777778,
+      [
+       0.452583,
+       0.936776
+      ]
+     ],
+     "recall": [
+      0.538462,
+      [
+       0.291434,
+       0.767942
+      ]
+     ],
+     "tp": 7
+    }
+   },
+   "sidechain_records": 0,
+   "sts_dropped": {
+    "copy": 359630,
+    "copy_share": 0.089187,
+    "kinds": {
+     "compacted": [
+      79105,
+      0
+     ],
+     "event_msg/agent_message": [
+      68087,
+      0
+     ],
+     "event_msg/agent_reasoning": [
+      1861,
+      0
+     ],
+     "event_msg/mcp_tool_call_end": [
+      90995,
+      6692
+     ],
+     "event_msg/patch_apply_end": [
+      44120,
+      33576
+     ],
+     "event_msg/task_complete": [
+      15346,
+      0
+     ],
+     "event_msg/thread_settings_applied": [
+      0,
+      1876
+     ],
+     "event_msg/user_message": [
+      12749,
+      0
+     ],
+     "event_msg/web_search_end": [
+      92,
+      7512
+     ],
+     "response_item/web_search_call": [
+      0,
+      150
+     ],
+     "session_meta": [
+      0,
+      404066
+     ],
+     "turn_context": [
+      2372,
+      14070
+     ],
+     "world_state": [
+      44903,
+      0
+     ]
+    },
+    "unique": 467942,
+    "unique_share": 0.116048
+   },
+   "versions": {
+    "0.125.0": {
+     "bytes": 945426,
+     "emitted": 651605,
+     "new_conversation_keys": 0,
+     "new_kinds": 0,
+     "quiet_keys": 0,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 2,
+     "source": 651605,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    },
+    "0.140.0-alpha.2": {
+     "bytes": 3080835,
+     "emitted": 1879107,
+     "new_conversation_keys": 0,
+     "new_kinds": 9,
+     "quiet_keys": 1,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 1879107,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    },
+    "0.145.0": {
+     "bytes": 32736,
+     "emitted": 8248,
+     "new_conversation_keys": 2,
+     "new_kinds": 7,
+     "quiet_keys": 1,
+     "quiet_mapped_keys": 0,
+     "reasoning": 0,
+     "sessions": 1,
+     "source": 8248,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    },
+    "0.147.0-alpha.1.2": {
+     "bytes": 6004817,
+     "emitted": 673474,
+     "new_conversation_keys": 19,
+     "new_kinds": 12,
+     "quiet_keys": 0,
+     "quiet_mapped_keys": 0,
+     "reasoning": 1861,
+     "sessions": 1,
+     "source": 673474,
+     "thinking_blocks": 0,
+     "thinking_empty": 0
+    }
+   }
+  }
+ }
+}

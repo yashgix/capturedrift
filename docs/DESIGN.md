@@ -172,3 +172,11 @@ chooses.
   "dropped" an upper bound.
 - **A mapping written after the fact.** The STS table was authored with all versions in view, so its share is a best
   case for a fixed mapping, not an estimate of what a mapping written in 2.1.145 would have kept.
+
+## Loss accounting (v2)
+
+v2 keeps the v1 measurements and adds `capturedrift/loss.py` (see `SPEC-v2.md`). The v1 STS share counts bytes at
+mapped paths. The loss accounting runs `normalize` on the raw records and counts the content it wrote, so a
+normalizer that reads the wrong field shows up as missing bytes. The thinking bug was exactly that. Unread text is
+split into copies of kept content and unique text, so tool results repeated in `toolUseResult` do not count as
+loss. Alarms are also scored per record kind, because one new record kind brings dozens of new keys at once.
