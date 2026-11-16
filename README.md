@@ -16,7 +16,10 @@ approximate-copy match is a heuristic. Shares are of held-out text.
 - Codex: frozen parser 23.2% to 27.1%, STS mapping 11.7% to 15.8%
 <!-- headline:end -->
 
-The three simple alarms are noisy: precision is low and the 95% intervals are wide (tables below). The data is small
+The three simple alarms are noisy: precision is low and the 95% intervals are wide (tables below). Per record kind, the any-new-key alarm
+on Claude Code fired 24 times with 20 false alarms (precision 0.17), and on Codex 28 times with 15 false alarms (precision 0.46).
+Drift labels come from version changes: a case counts as real when a new key carries text, not because a real importer was
+seen to break. The data is small
 (40 sessions, five of them Codex), so these numbers illustrate a method and do not estimate a population.
 
 ```text

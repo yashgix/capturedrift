@@ -166,7 +166,7 @@ footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
 <section class="wrap"><div class="wide stack">
   <div class="col stack">
     <h2>Do simple alarms catch it?</h2>
-    <p>Not well. A case is a record kind with new keys in a held-out version. Alarms fire often on new keys that carry no text, so precision is low, and with this few cases the 95% Wilson intervals are wide. Treat the alarms as a noisy hint, not a detector you can rely on.</p>
+    <p>Not well. A case is a record kind with new keys in a held-out version. Alarms fire often on new keys that carry no text, so precision is low, and with this few cases the 95% Wilson intervals are wide. Treat the alarms as a noisy hint, not a detector you can rely on. For example, the any-new-key alarm on Claude Code fired 24 times and 20 were false alarms (precision 0.17), and on Codex it fired 28 times with 15 false alarms (precision 0.46). The labels also come from version changes. A case counts as real when a new key carries text, not because a real importer was seen to break, so this measures a proxy for drift and not observed drift.</p>
   </div>
   <div class="table-wrap">
 <!-- alarms:start -->
