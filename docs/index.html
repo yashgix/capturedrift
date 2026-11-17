@@ -26,12 +26,14 @@
 }
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 1.0625rem; line-height: 1.65; }
-.wrap { padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .col { max-width: 760px; margin-inline: auto; }
 .wide { max-width: 980px; margin-inline: auto; }
 a { color: var(--accent); text-underline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 h1, h2, h3 { line-height: 1.2; margin: 0; text-wrap: balance; }
 h1 { font-family: var(--mono); font-size: clamp(2.1rem, 5.5vw, 3rem); letter-spacing: -0.03em; }
+h1.sub { font-family: var(--sans); font-size: clamp(1.8rem, 4.4vw, 2.5rem); letter-spacing: -0.02em; }
 h2 { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.015em; }
 h3 { font-size: 1.05rem; font-weight: 600; margin-top: 0.6rem; }
 p, ul { margin: 0; }
@@ -47,7 +49,19 @@ section { padding-block: 2.5rem; }
 section + section { border-top: 1px solid var(--line); }
 header { padding-block: 3rem 2rem; background: linear-gradient(180deg, var(--band), var(--paper)); }
 .lede { font-size: 1.2rem; color: var(--muted); line-height: 1.55; }
-.gh { align-self: flex-start; font-size: 0.875rem; font-weight: 600; text-decoration: none; border: 1px solid var(--accent); border-radius: 999px; padding: 0.3rem 0.9rem; }
+
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.bar-in { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.6rem; }
+.brand { font-family: var(--mono); font-weight: 500; }
+.tabs { display: flex; gap: 0.25rem; }
+.bar-in .tabs { margin-left: auto; }
+.tabs button { font: inherit; font-size: 0.8125rem; font-weight: 500; border: 0; background: transparent; color: var(--muted); padding: 0.4rem 0.8rem; border-radius: 999px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--accent-soft); color: var(--accent); }
+.gh { font-size: 0.8125rem; font-weight: 600; text-decoration: none; white-space: nowrap; border: 1px solid var(--accent); border-radius: 999px; padding: 0.3rem 0.8rem; }
+.gh:hover { background: var(--accent-soft); }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; font: inherit; font-weight: 500; padding: 0.55rem 1rem; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); background: var(--paper); cursor: pointer; }
+
 .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; }
 .tile { border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; display: flex; flex-direction: column; gap: 0.3rem; }
 .tile .big { font-family: var(--mono); font-size: 1.15rem; font-weight: 600; color: var(--loss); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
@@ -79,18 +93,30 @@ footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
 @media (max-width: 760px) {
   .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .b { grid-template-columns: 7.5rem minmax(0, 1fr) 3.5rem; gap: 0.5rem; }
+  .brand { display: none; }
+  .tabs button { padding: 0.4rem 0.55rem; }
+  .gh { padding: 0.3rem 0.6rem; }
 }
 </style>
 </head>
 <body>
+
+<div class="bar wrap"><div class="wide bar-in">
+  <span class="brand">capturedrift</span>
+  <div class="tabs" role="tablist" aria-label="View">
+    <button role="tab" id="tab-overview" aria-controls="overview" aria-selected="true" data-view="overview">Overview</button>
+    <button role="tab" id="tab-details" aria-controls="details" aria-selected="false" data-view="details">Technical details</button>
+  </div>
+  <a class="gh" href="https://github.com/yashgix/capturedrift" target="_blank" rel="noopener">GitHub ↗</a>
+</div></div>
+
+<main id="overview" role="tabpanel" aria-labelledby="tab-overview">
 <header class="wrap"><div class="col stack">
   <p class="eyebrow">Claude Code · Codex · session traces</p>
   <h1>capturedrift</h1>
   <p class="lede">Detects silent data loss when coding-agent session logs from many Claude Code and Codex versions are captured into a standard trace schema, measured on real public sessions.</p>
-  <a class="gh" href="https://github.com/yashgix/capturedrift">GitHub ↗</a>
 </div></header>
 
-<main>
 <section class="wrap"><div class="col stack">
   <h2>The problem</h2>
   <p>A capture tool can store raw sessions first and normalize them later, so the raw log is safe. The importer in front of it is not. It encodes one CLI version's field layout. Later versions keep the old fields and add new ones, so the importer keeps running and keeps succeeding. It just never reads the new shapes. No exception, no warning, no log line.</p>
@@ -110,12 +136,13 @@ footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
 <div class="tile"><span class="big">11.7% to 15.8%</span><span class="small muted">Codex · STS mapping, held-out</span></div>
 <!-- tiles:end -->
   </div>
-  <p class="muted small">Generated from <code>results/metrics-v2.json</code> by <code>tools/build_page.py</code>. Codex has five sessions and one training version, so its numbers illustrate the method and are not an estimate for all Codex use.</p>
+  <p class="muted small">Source: <code>results/metrics-v2.json</code>. Codex has five sessions and one training version, so its numbers illustrate the method and are not an estimate for all Codex use.</p>
+  <p class="col">Simple alarms do not catch the drift reliably. They fire often on new keys that carry no text, so precision is low and the 95% intervals are wide. The full tables are under Technical details.</p>
 </div></section>
 
 <section class="wrap"><div class="wide stack">
   <div class="col stack">
-    <h2>Approach</h2>
+    <h2>How it works</h2>
     <p>Everything is a key: a record kind plus a path into the record, such as <code>assistant</code> and <code>message.content[]&lt;text&gt;.text</code>. Sizes are compact JSON bytes, so the accounting adds up exactly. Two parsers are modelled and measured on the same ruler.</p>
     <ul>
       <li><b>Frozen parser.</b> Knows only the keys in the sessions up to a cutoff version. Everything later is held out. The split is by version, not by date, because a parser is frozen at a version and session dates are not in version order.</li>
@@ -137,6 +164,27 @@ footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
   </svg></div>
 </div></section>
 
+<section class="wrap"><div class="col stack">
+  <h2>Limits</h2>
+  <ul>
+    <li><b>Small data.</b> 40 sessions, at most two per version. Codex has five sessions and three held-out versions.</li>
+    <li><b>Codex training is one version</b> (0.125.0), so it has no training-period version change. The byte threshold is tuned on Claude Code only.</li>
+    <li><b>Version and source are confounded.</b> Different versions mostly come from different people and setups.</li>
+    <li><b>Copies are matched on text.</b> The approximate copy rule is a heuristic, which is why loss is a range.</li>
+    <li><b>The mapping was chosen late.</b> It was written after looking at all versions, so its share is a best case for a fixed mapping.</li>
+    <li><b>Redaction.</b> The sessions are public and were redacted for credentials, emails and home paths, but redaction is best effort and the uploaders' own anonymization is not improved by this project.</li>
+    <li>No real data contains subagent records, so that case is tested only on synthetic records.</li>
+  </ul>
+  <p><button class="btn" type="button" data-view="details">Technical details →</button></p>
+</div></section>
+</main>
+
+<main id="details" role="tabpanel" aria-labelledby="tab-details" hidden>
+<header class="wrap"><div class="col stack">
+  <p class="eyebrow">Technical details</p>
+  <h1 class="sub">Tables, method and data</h1>
+</div></header>
+
 <section class="wrap"><div class="wide stack">
   <div class="col stack">
     <h2>Loss by parser</h2>
@@ -147,7 +195,7 @@ footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
 <table><thead><tr><th>Harness</th><th>Parser and sessions</th><th class="r">Exact copy</th><th class="r">Approximate copy</th><th class="r">Not matched</th><th class="r">Loss range</th></tr></thead><tbody><tr><td>Claude Code</td><td>Frozen at the cutoff, held-out</td><td class="r">0.0%</td><td class="r">0.2%</td><td class="r">0.3%</td><td class="r">0.3% to 0.4%</td></tr><tr><td>Claude Code</td><td>STS mapping, held-out</td><td class="r">24.7%</td><td class="r">21.7%</td><td class="r">10.8%</td><td class="r">10.8% to 32.4%</td></tr><tr><td>Claude Code</td><td>STS mapping, all sessions</td><td class="r">24.8%</td><td class="r">20.5%</td><td class="r">10.6%</td><td class="r">10.6% to 31.1%</td></tr><tr><td>Codex</td><td>Frozen at the cutoff, held-out</td><td class="r">2.4%</td><td class="r">3.9%</td><td class="r">23.2%</td><td class="r">23.2% to 27.1%</td></tr><tr><td>Codex</td><td>STS mapping, held-out</td><td class="r">7.7%</td><td class="r">4.1%</td><td class="r">11.7%</td><td class="r">11.7% to 15.8%</td></tr><tr><td>Codex</td><td>STS mapping, all sessions</td><td class="r">6.6%</td><td class="r">3.4%</td><td class="r">10.4%</td><td class="r">10.4% to 13.9%</td></tr></tbody></table>
 <!-- loss:end -->
   </div>
-  <p class="muted small">Generated from <code>results/metrics-v2.json</code>.</p>
+  <p class="muted small">Source: <code>results/metrics-v2.json</code>.</p>
 </div></section>
 
 <section class="wrap"><div class="wide stack">
@@ -160,7 +208,7 @@ footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
 <h3>Claude Code</h3><div class="bars"><div class="b"><span class="name">2.1.158 bytes</span><span class="track"><span class="fill bytes" style="width:8.31%"></span></span><span class="v"><b>8.3%</b></span></div><div class="b"><span class="name">2.1.158 text</span><span class="track"><span class="fill text" style="width:0.55%"></span></span><span class="v"><b>0.6%</b></span></div><div class="b"><span class="name">2.1.159 bytes</span><span class="track"><span class="fill bytes" style="width:0.69%"></span></span><span class="v"><b>0.7%</b></span></div><div class="b"><span class="name">2.1.159 text</span><span class="track"><span class="fill text" style="width:0.00%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.160 bytes</span><span class="track"><span class="fill bytes" style="width:0.79%"></span></span><span class="v"><b>0.8%</b></span></div><div class="b"><span class="name">2.1.160 text</span><span class="track"><span class="fill text" style="width:0.00%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.162 bytes</span><span class="track"><span class="fill bytes" style="width:0.03%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.162 text</span><span class="track"><span class="fill text" style="width:0.00%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.167 bytes</span><span class="track"><span class="fill bytes" style="width:0.02%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.167 text</span><span class="track"><span class="fill text" style="width:0.00%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.168 bytes</span><span class="track"><span class="fill bytes" style="width:0.67%"></span></span><span class="v"><b>0.7%</b></span></div><div class="b"><span class="name">2.1.168 text</span><span class="track"><span class="fill text" style="width:0.65%"></span></span><span class="v"><b>0.6%</b></span></div><div class="b"><span class="name">2.1.169 bytes</span><span class="track"><span class="fill bytes" style="width:2.08%"></span></span><span class="v"><b>2.1%</b></span></div><div class="b"><span class="name">2.1.169 text</span><span class="track"><span class="fill text" style="width:0.13%"></span></span><span class="v"><b>0.1%</b></span></div><div class="b"><span class="name">2.1.170 bytes</span><span class="track"><span class="fill bytes" style="width:0.53%"></span></span><span class="v"><b>0.5%</b></span></div><div class="b"><span class="name">2.1.170 text</span><span class="track"><span class="fill text" style="width:0.04%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.172 bytes</span><span class="track"><span class="fill bytes" style="width:4.20%"></span></span><span class="v"><b>4.2%</b></span></div><div class="b"><span class="name">2.1.172 text</span><span class="track"><span class="fill text" style="width:0.64%"></span></span><span class="v"><b>0.6%</b></span></div><div class="b"><span class="name">2.1.173 bytes</span><span class="track"><span class="fill bytes" style="width:0.23%"></span></span><span class="v"><b>0.2%</b></span></div><div class="b"><span class="name">2.1.173 text</span><span class="track"><span class="fill text" style="width:0.00%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.174 bytes</span><span class="track"><span class="fill bytes" style="width:0.61%"></span></span><span class="v"><b>0.6%</b></span></div><div class="b"><span class="name">2.1.174 text</span><span class="track"><span class="fill text" style="width:0.00%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.175 bytes</span><span class="track"><span class="fill bytes" style="width:28.97%"></span></span><span class="v"><b>29.0%</b></span></div><div class="b"><span class="name">2.1.175 text</span><span class="track"><span class="fill text" style="width:0.00%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.176 bytes</span><span class="track"><span class="fill bytes" style="width:6.10%"></span></span><span class="v"><b>6.1%</b></span></div><div class="b"><span class="name">2.1.176 text</span><span class="track"><span class="fill text" style="width:0.05%"></span></span><span class="v"><b>0.0%</b></span></div><div class="b"><span class="name">2.1.177 bytes</span><span class="track"><span class="fill bytes" style="width:1.49%"></span></span><span class="v"><b>1.5%</b></span></div><div class="b"><span class="name">2.1.177 text</span><span class="track"><span class="fill text" style="width:1.80%"></span></span><span class="v"><b>1.8%</b></span></div><div class="b"><span class="name">2.1.220 bytes</span><span class="track"><span class="fill bytes" style="width:36.71%"></span></span><span class="v"><b>36.7%</b></span></div><div class="b"><span class="name">2.1.220 text</span><span class="track"><span class="fill text" style="width:1.38%"></span></span><span class="v"><b>1.4%</b></span></div></div>
 <h3>Codex</h3><div class="bars"><div class="b"><span class="name">0.140.0-alpha.2 bytes</span><span class="track"><span class="fill bytes" style="width:10.56%"></span></span><span class="v"><b>10.6%</b></span></div><div class="b"><span class="name">0.140.0-alpha.2 text</span><span class="track"><span class="fill text" style="width:9.46%"></span></span><span class="v"><b>9.5%</b></span></div><div class="b"><span class="name">0.145.0 bytes</span><span class="track"><span class="fill bytes" style="width:15.42%"></span></span><span class="v"><b>15.4%</b></span></div><div class="b"><span class="name">0.145.0 text</span><span class="track"><span class="fill text" style="width:14.24%"></span></span><span class="v"><b>14.2%</b></span></div><div class="b"><span class="name">0.147.0-alpha.1.2 bytes</span><span class="track"><span class="fill bytes" style="width:93.54%"></span></span><span class="v"><b>93.5%</b></span></div><div class="b"><span class="name">0.147.0-alpha.1.2 text</span><span class="track"><span class="fill text" style="width:79.25%"></span></span><span class="v"><b>79.3%</b></span></div></div>
 <!-- bars:end -->
-  <p class="muted small">Generated from <code>results/metrics.json</code>.</p>
+  <p class="muted small">Source: <code>results/metrics.json</code>.</p>
 </div></section>
 
 <section class="wrap"><div class="wide stack">
@@ -173,30 +221,23 @@ footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
 <table><thead><tr><th>Harness</th><th>Alarm</th><th class="r">tp / fp / fn</th><th class="r">Precision (95%)</th><th class="r">Recall (95%)</th></tr></thead><tbody><tr><td>Claude Code</td><td><code>any</code></td><td class="r">4 / 20 / 1</td><td class="r">0.17 (0.07 to 0.36)</td><td class="r">0.80 (0.38 to 0.96)</td></tr><tr><td>Claude Code</td><td><code>bytes</code></td><td class="r">4 / 7 / 1</td><td class="r">0.36 (0.15 to 0.65)</td><td class="r">0.80 (0.38 to 0.96)</td></tr><tr><td>Claude Code</td><td><code>kind</code></td><td class="r">3 / 4 / 2</td><td class="r">0.43 (0.16 to 0.75)</td><td class="r">0.60 (0.23 to 0.88)</td></tr><tr><td>Codex</td><td><code>any</code></td><td class="r">13 / 15 / 0</td><td class="r">0.46 (0.30 to 0.64)</td><td class="r">1.00 (0.77 to 1.00)</td></tr><tr><td>Codex</td><td><code>bytes</code></td><td class="r">13 / 7 / 0</td><td class="r">0.65 (0.43 to 0.82)</td><td class="r">1.00 (0.77 to 1.00)</td></tr><tr><td>Codex</td><td><code>kind</code></td><td class="r">7 / 2 / 6</td><td class="r">0.78 (0.45 to 0.94)</td><td class="r">0.54 (0.29 to 0.77)</td></tr></tbody></table>
 <!-- alarms:end -->
   </div>
-  <p class="muted small">Generated from <code>results/metrics-v2.json</code>.</p>
+  <p class="muted small">Source: <code>results/metrics-v2.json</code>.</p>
 </div></section>
 
 <section class="wrap"><div class="col stack">
   <h2>What version 2 changed and why</h2>
-  <p>A review of the first version found two weaknesses, and version 2 fixes both without changing any v1 number.</p>
+  <p>The first version had two weaknesses. Version 2 fixes both without changing any v1 number.</p>
   <ul>
     <li>The common-schema share counted bytes at mapped key paths, so a normalizer bug (it read thinking text from the wrong field) did not move it. Version 2 counts what <code>normalize</code> writes and fails a test if that drifts from what the mapping reads.</li>
     <li>"Unseen" text included copies of kept content. Version 2 splits it into exact copy, approximate copy and not matched, and reports loss as a range.</li>
-    <li>It adds per-kind alarm counts with intervals, keys that went quiet, kinds new to a harness, and tests that pin how sidechain and compacted records are handled.</li>
+    <li>It also adds per-kind alarm counts with intervals, keys that went quiet, kinds new to a harness, and tests that pin how sidechain and compacted records are handled.</li>
   </ul>
 </div></section>
 
 <section class="wrap"><div class="col stack">
-  <h2>Limits</h2>
-  <ul>
-    <li><b>Small data.</b> 40 sessions, at most two per version. Codex has five sessions and three held-out versions.</li>
-    <li><b>Codex training is one version</b> (0.125.0), so it has no training-period version change. The byte threshold is tuned on Claude Code only.</li>
-    <li><b>Version and source are confounded.</b> Different versions mostly come from different people and setups.</li>
-    <li><b>Copies are matched on text.</b> The approximate copy rule is a heuristic, which is why loss is a range.</li>
-    <li><b>The mapping was chosen late.</b> It was written after looking at all versions, so its share is a best case for a fixed mapping.</li>
-    <li><b>Redaction.</b> The sessions are public and were redacted for credentials, emails and home paths, but redaction is best effort and the uploaders' own anonymization is not improved by this project.</li>
-    <li>No real data contains subagent records, so that case is tested only on synthetic records.</li>
-  </ul>
+  <h2>Data and licenses</h2>
+  <p>The 40 session files come from 12 public, ungated Hugging Face datasets at fixed commits, under MIT, Apache-2.0, CC0-1.0 or CC-BY-4.0. Home-directory user names, email addresses and credential-shaped strings were redacted, and <code>data/MANIFEST.json</code> records each file's source, sha256 and redaction counts. Dataset credits and license texts are in the <a href="https://github.com/yashgix/capturedrift#data-and-licenses">README</a>.</p>
+  <p>The code is MIT licensed. This project is not affiliated with any tool or dataset named here.</p>
 </div></section>
 
 <section class="wrap"><div class="col stack">
@@ -206,10 +247,29 @@ cd capturedrift
 make test         # needs Python 3.14, no dependencies
 make experiment   # results/metrics.json
 make loss         # results/metrics-v2.json</code></pre>
-  <p>The data is in the repository, and <code>make data-check</code> verifies every file against the manifest without network. Reruns reproduce <code>results/</code> byte for byte. Licenses and dataset credits are in the <a href="https://github.com/yashgix/capturedrift#data-and-licenses">README</a>.</p>
+  <p>The data is in the repository, and <code>make data-check</code> verifies every file against the manifest without network. Reruns reproduce <code>results/</code> byte for byte.</p>
+  <p><button class="btn" type="button" data-view="overview">← Overview</button></p>
 </div></section>
 </main>
 
-<footer class="wrap"><div class="col muted small">Built with Arcturus (Claude Code builders, Codex review). Reviewed and verified by hand. Code is MIT licensed. Not affiliated with any tool or dataset named here.</div></footer>
+<footer class="wrap"><div class="wide small muted">capturedrift · Yash Gupta · <a href="https://github.com/yashgix/capturedrift">github.com/yashgix/capturedrift</a></div></footer>
+
+<script>
+const views = ["overview", "details"];
+function show(v) {
+  if (!views.includes(v)) v = "overview";
+  for (const x of views) {
+    document.getElementById(x).hidden = x !== v;
+    document.getElementById("tab-" + x).setAttribute("aria-selected", String(x === v));
+  }
+}
+document.querySelectorAll("[data-view]").forEach((b) => b.addEventListener("click", () => {
+  history.replaceState(null, "", "#" + b.dataset.view);
+  show(b.dataset.view);
+  window.scrollTo(0, 0);
+}));
+addEventListener("hashchange", () => show(location.hash.slice(1)));
+show(location.hash.slice(1));
+</script>
 </body>
 </html>

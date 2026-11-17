@@ -16,11 +16,11 @@ approximate-copy match is a heuristic. Shares are of held-out text.
 - Codex: frozen parser 23.2% to 27.1%, STS mapping 11.7% to 15.8%
 <!-- headline:end -->
 
-The three simple alarms are noisy: precision is low and the 95% intervals are wide (tables below). Per record kind, the any-new-key alarm
-on Claude Code fired 24 times with 20 false alarms (precision 0.17), and on Codex 28 times with 15 false alarms (precision 0.46).
-Drift labels come from version changes: a case counts as real when a new key carries text, not because a real importer was
-seen to break. The data is small
-(40 sessions, five of them Codex), so these numbers illustrate a method and do not estimate a population.
+The three simple alarms are noisy: precision is low and the 95% intervals are wide (tables below). Per record kind,
+the any-new-key alarm on Claude Code fired 24 times with 20 false alarms (precision 0.17), and on Codex 28 times with
+15 false alarms (precision 0.46). Drift labels come from version changes: a case counts as real when a new key carries
+text, not because a real importer was seen to break. The data is small (40 sessions, five of them Codex), so these
+numbers illustrate a method and do not estimate a population.
 
 ```text
 $ python -m capturedrift audit --harness codex data/sessions/codex/<dataset>/<rollout>.jsonl
@@ -34,7 +34,7 @@ $ python -m capturedrift audit --harness codex data/sessions/codex/<dataset>/<ro
 
 A capture product stores raw sessions first and normalizes them later, so the raw log is safe. The importer in
 front of it is not: it encodes one version's field layout, and later versions keep the old fields while adding new
-ones. This milestone measures, version by version, the gap between what the raw session contains and what such a
+ones. This project measures, version by version, the gap between what the raw session contains and what such a
 frozen parser can see. It is a measurement, not a claim about any particular product's code.
 
 ## What this measures
@@ -50,7 +50,6 @@ frozen parser can see. It is a measurement, not a claim about any particular pro
    the version's first session) and `bytes` (new keys over a size threshold), scored against the new keys that
    actually carry text content on held-out version changes. The one tunable threshold is chosen on training-period
    version changes only.
-
 4. **Loss accounting (version 2).** Which unread text is only a copy of content the parser kept and which is
    not matched at all, what `normalize` actually writes against what its mapping reads, which known keys go quiet, and
    the alarms counted per record kind with intervals. See `SPEC-v2.md`.
@@ -100,8 +99,9 @@ make page         # re-render the generated blocks of docs/index.html
 python demo.py    # one-line summary of the metrics
 ```
 
-Both reruns reproduce `results/` and the generated README blocks byte for byte. `python experiment.py --out PATH [--data DIR]` writes the metrics as JSON with sorted keys, indent 1 and a final
-newline. Two runs produce byte-identical files.
+Both reruns reproduce `results/` and the generated README blocks byte for byte. `python experiment.py --out PATH
+[--data DIR]` writes the metrics as JSON with sorted keys, indent 1 and a final newline, so two runs produce
+byte-identical files.
 
 ## Command line
 
@@ -229,8 +229,9 @@ Path-based STS text share, which the held-out loss rows above are measured again
 #### What the normalizer writes against what its mapping reads
 
 The path-based STS share counts bytes at mapped keys. This table counts what `normalize` wrote.
-Reasoning removed subtracts the reasoning bytes. For Claude Code that equals what the normalizer wrote
-before the thinking fix (checked against the old code). Empty strings are left out of both sides.
+Reasoning removed subtracts the reasoning bytes. For Claude Code that equals what an earlier normalizer
+wrote when it read thinking text from the wrong field (checked against that code). Empty strings are left
+out of both sides.
 
 | Harness | Content bytes mapped | Written by normalize | Written / mapped | Reasoning removed (ablation) | Path-based STS bytes | Written content, share of bytes |
 |---|---|---|---|---|---|---|
@@ -313,9 +314,13 @@ capturedrift/data.py    records, sessions, manifest loading and ordering
 capturedrift/sts.py     the fixed STS normalizer
 capturedrift/drift.py   unseen shares, version changes, alarms, threshold tuning
 capturedrift/run.py     the 43 experiment metrics
+capturedrift/loss.py    the version 2 loss accounting
 capturedrift/__main__.py  the audit and normalize subcommands
 experiment.py           run the experiment
 demo.py                 summary line and README renderer
+demo_loss.py            README loss block renderer
+tools/fetch_data.py     restore and verify the pinned data
+tools/build_page.py     fill the result blocks of docs/index.html and the README headline
 tests/                  unittest suite
 docs/DESIGN.md          method and trade-offs
 SPEC-v2.md              what version 2 adds
@@ -338,8 +343,9 @@ SPEC-v2.md              what version 2 adds
 - **Duplicated content.** Some dropped content appears elsewhere — Claude's `toolUseResult` repeats tool results
   — so "dropped" is an upper bound on loss.
 - **STS share is by path.** The v1 STS byte and text shares count the leaves at mapped key paths. They do not
-  measure what `normalize` writes, so the thinking bug did not move them. The loss accounting counts what
-  `normalize` writes, and a test fails if that drifts from what the mapping reads.
+  measure what `normalize` writes, so a normalizer bug that read thinking text from the wrong field did not move
+  them. The loss accounting counts what `normalize` writes, and a test fails if that drifts from what the mapping
+  reads.
 - **Copies are matched on text.** An exact copy is a string that appears verbatim in kept content. An approximate
   copy has at least 90% of its line bytes (after removing line-number prefixes) in kept content. That is a
   heuristic, so it is reported separately, and loss is only bounded: at least the not matched share, at most that
@@ -391,7 +397,3 @@ CC-BY-4.0) that allows copying with attribution, checked on each dataset's Huggi
 The files here are the published sessions after the redaction described above. Some datasets say their own
 anonymization is best effort. If a dataset owner asks for removal, `tools/fetch_data.py` can rebuild the rest from the
 manifest, and the pinned files can be dropped from the repository and its history.
-
-## Built with
-
-Built with Arcturus (Claude Code builders, Codex review); reviewed and verified by hand.

@@ -178,6 +178,7 @@ chooses.
 
 v2 keeps the v1 measurements and adds `capturedrift/loss.py` (see `SPEC-v2.md`). The v1 STS share counts bytes at
 mapped paths. The loss accounting runs `normalize` on the raw records and counts the content it wrote, so a
-normalizer that reads the wrong field shows up as missing bytes. The thinking bug was exactly that. Unread text is
-split into exact copies of kept content, approximate copies (a heuristic) and text not matched, so tool results
-repeated in `toolUseResult` do not count as loss. Alarms are also scored per record kind, because one new record kind brings dozens of new keys at once.
+normalizer that reads the wrong field shows up as missing bytes. An earlier normalizer did exactly that with Claude
+thinking text. Unread text is split into exact copies of kept content, approximate copies (a heuristic) and text not
+matched, so tool results repeated in `toolUseResult` do not count as loss. Alarms are also scored per record kind,
+because one new record kind brings dozens of new keys at once.
