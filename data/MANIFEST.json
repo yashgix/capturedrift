@@ -1,6 +1,6 @@
 {
  "fetched": "2026-11-14",
- "note": "Public, ungated Hugging Face agent-session datasets, each under the license its card states (copies in licenses/, cards in sources/). Files are byte copies of the upstream sessions at the pinned revision, except that tools/fetch_data.py replaces personal home-directory names, email addresses, token-shaped strings and credential-shaped text (counts per file under redactions; cards under card_redactions).",
+ "note": "Public, ungated Hugging Face agent-session datasets, each under the license its card states (copies in licenses/, cards in sources/). Files are byte copies of the upstream sessions at the pinned revision, except that tools/fetch_data.py replaces personal home-directory names, email addresses, token-shaped strings and credential-shaped text (counts per file under redactions; cards under card_redactions), and tools/redact.py then replaces third-party cookie values and signed-URL signatures with same-length runs of x.",
  "selection": "Raw Claude Code and Codex session files only (no converted, synthetic or re-wrapped exports; gated datasets excluded). Per (harness, CLI version as recorded in the file), the two sessions with the earliest first timestamp among files of at most 8 MB, ties by dataset then path. Fable copies use the original upload (armand0e).",
  "sources": {
   "AlinCiocan__fable-5-claude-code-traces": {
