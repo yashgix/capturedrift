@@ -143,7 +143,7 @@ class PinnedData(unittest.TestCase):
         self.assertEqual(totals, {"home": 197, "encoded_home": 23, "email": 81, "token": 0, "secret": 172})
 
     def test_no_credential_shapes_left(self):
-        # The same credential shapes Arcturus's runner refuses to send, in raw bytes and in decoded JSON strings.
+        # The same credential shapes the test runner refuses to send, in raw bytes and in decoded JSON strings.
         secret = re.compile(
             r"sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{30,}|xox[abpr]-[A-Za-z0-9-]{10,}|AKIA[0-9A-Z]{16}"
             r"|-----BEGIN [A-Z ]*PRIVATE KEY-----|[A-Z0-9_]*(?:TOKEN|SECRET|API_KEY|PASSWORD)=[^\s\"']{8,}"
