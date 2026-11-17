@@ -550,7 +550,7 @@
    "upstream_path": "sessions/claude_code/7563bddf-c1a0-4c3e-86ee-062bf288e6d3.jsonl",
    "upstream_sha256": "113f92342fbb0cea1dafe2660d3cfeff24129f8d4c8c7257b5a6836a2820f666",
    "upstream_bytes": 1979243,
-   "sha256": "113f92342fbb0cea1dafe2660d3cfeff24129f8d4c8c7257b5a6836a2820f666",
+   "sha256": "01db50b6265974814a992e668b9984e68a5c00e32d93e500e7554740158c83c4",
    "bytes": 1979243,
    "redactions": {
     "home": 0,
@@ -601,7 +601,7 @@
    "upstream_path": "sessions/claude_code/ba1b4916-b581-4e05-9a5c-c1d8ffc9b50a.jsonl",
    "upstream_sha256": "3d5971c8fc3b07fffcd7a23a350c74d576d5052ded23b2d8686a07cb0c93073b",
    "upstream_bytes": 641419,
-   "sha256": "3d5971c8fc3b07fffcd7a23a350c74d576d5052ded23b2d8686a07cb0c93073b",
+   "sha256": "11b192506c94114c9938ed7c4bd2f6600b906e9c0ced69f5d09b76aded23bd94",
    "bytes": 641419,
    "redactions": {
     "home": 0,
@@ -703,7 +703,7 @@
    "upstream_path": "traces/2026/06/14/rollout-2026-06-14T20-33-08-019ec61f-1e93-79f1-a186-19bc0288e629.jsonl",
    "upstream_sha256": "1e8ba3f843dab310034be32258feb8fff463286180bbb63374f372a5fc1f2e96",
    "upstream_bytes": 3407296,
-   "sha256": "bcb8c19377d4c52c33b1dd90ec953272defc4acb79e5ad3153248d79ba8fabf1",
+   "sha256": "173d3ae359c9e8c65543316150e7bfb19b0e26f478944add4fe6c611a252342f",
    "bytes": 3404234,
    "redactions": {
     "home": 1,
@@ -754,7 +754,7 @@
    "upstream_path": "r3al-vit-quantization-codex-trace.jsonl",
    "upstream_sha256": "49139871dcee1de04956fb41da9fb4cae66b832f76af928c2200c8f8f7bbf9a0",
    "upstream_bytes": 6140719,
-   "sha256": "586413cc4ca5b98c83e811dfa56af6ba2e6c7062ec903c77d0ebb74d1d8e8da2",
+   "sha256": "a35d9d6492fb91fb6db4eedbdaa72d70f46aca1224fd9fa646b21c1c95e7b505",
    "bytes": 6138951,
    "redactions": {
     "home": 0,

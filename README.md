@@ -83,8 +83,11 @@ one original upload.
 `tools/fetch_data.py` replaced home-directory user names, email addresses and token-shaped strings in the
 upstream bytes, and credential-shaped text (API keys, `NAME_TOKEN=value` and the like) inside each line's decoded
 strings, re-encoding only the lines it changed. Dataset cards got the same credential pass. JSON structure is
-unchanged, and the per-rule counts are in the manifest. Some upstream datasets had already been anonymized by
-whoever published them; the data here is what was published, once redacted as above.
+unchanged, and the per-rule counts are in the manifest. `tools/redact.py` then replaced third-party cookie values
+(Reddit, Cloudflare and GitHub cookies that sessions printed or received) and the signatures of signed download URLs
+with runs of `x` of the same length, so no browser or session identifier is republished and every file keeps its
+byte count and JSON structure. Some upstream datasets had already been anonymized by whoever published them;
+the data here is what was published, once redacted as above.
 
 ## Running it
 
@@ -320,6 +323,7 @@ experiment.py           run the experiment
 demo.py                 summary line and README renderer
 demo_loss.py            README loss block renderer
 tools/fetch_data.py     restore and verify the pinned data
+tools/redact.py         same-length cookie and URL signature redaction
 tools/build_page.py     fill the result blocks of docs/index.html and the README headline
 tests/                  unittest suite
 docs/DESIGN.md          method and trade-offs

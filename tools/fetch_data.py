@@ -15,6 +15,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from redact import redact
+
 DATA = Path(__file__).resolve().parent.parent / "data"
 HUB = "https://huggingface.co/datasets/"
 
@@ -147,7 +149,7 @@ def fetch(manifest):
         if sha256(raw) != entry["upstream_sha256"]:
             sys.exit(f"upstream changed: {entry['source']} {entry['upstream_path']}")
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(sanitize(raw)[0])
+        target.write_bytes(redact(sanitize(raw)[0]))
         time.sleep(1)
 
 
