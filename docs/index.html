@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>capturedrift</title>
-<meta name="description" content="Detects silent data loss when coding-agent session logs from many Claude Code and Codex versions are captured into a standard trace schema, measured on real public sessions.">
+<meta name="description" content="Measures silent data loss when coding-agent session logs from many Claude Code and Codex versions are captured into a standard trace schema, measured on real public sessions.">
 <style>
 :root {
   color-scheme: light;
@@ -111,13 +111,13 @@ footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
 <header class="wrap"><div class="col stack">
   <p class="eyebrow">Claude Code · Codex · session traces</p>
   <h1>capturedrift</h1>
-  <p class="lede">Detects silent data loss when coding-agent session logs from many Claude Code and Codex versions are captured into a standard trace schema, measured on real public sessions.</p>
+  <p class="lede">Measures silent data loss when coding-agent session logs from many Claude Code and Codex versions are captured into a standard trace schema, measured on real public sessions.</p>
 </div></header>
 
 <section class="wrap"><div class="col stack">
   <h2>The problem</h2>
   <p>A capture tool can store raw sessions first and normalize them later, so the raw log is safe. The importer in front of it is not. It encodes one CLI version's field layout. Later versions keep the old fields and add new ones, so the importer keeps running and keeps succeeding. It just never reads the new shapes. No exception, no warning, no log line.</p>
-  <p>capturedrift puts a number on that gap, on 40 real session files from public Hugging Face datasets that span 22 Claude Code versions and 4 Codex versions. It measures an importer in general. It makes no claim about any particular product's code.</p>
+  <p>capturedrift puts a number on that gap, on 40 real session files from public Hugging Face datasets that span 22 Claude Code versions and 4 Codex versions. It models a generic importer. It makes no claim about any particular product's code.</p>
 </div></section>
 
 <section class="wrap"><div class="wide stack">
@@ -169,8 +169,8 @@ footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
     <li><b>Version and source are confounded.</b> Different versions mostly come from different people and setups.</li>
     <li><b>Copies are matched on text.</b> The approximate copy rule is a heuristic, which is why loss is a range.</li>
     <li><b>The mapping was chosen late.</b> It was written after looking at all versions, so its share is a best case for a fixed mapping.</li>
-    <li><b>Redaction.</b> The sessions are public and were redacted for credentials, emails and home paths, but redaction is best effort and the uploaders' own anonymization is not improved by this project.</li>
-    <li>No real data contains subagent records, so that case is tested only on synthetic records.</li>
+    <li><b>Redaction.</b> The sessions are public and were redacted for credentials, emails, home paths, third-party cookies and URL signatures. The redaction is pattern-based, so it is best effort.</li>
+    <li>No session in this data contains subagent records, so that case is tested only on synthetic records.</li>
   </ul>
   <p><button class="btn" type="button" data-view="details">Technical details →</button></p>
 </div></section>
@@ -233,7 +233,7 @@ footer { padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
 
 <section class="wrap"><div class="col stack">
   <h2>Data and licenses</h2>
-  <p>The 40 session files come from 12 public, ungated Hugging Face datasets at fixed commits, under MIT, Apache-2.0, CC0-1.0 or CC-BY-4.0. Home-directory user names, email addresses and credential-shaped strings were redacted, and <code>data/MANIFEST.json</code> records each file's source, sha256 and redaction counts. Dataset credits and license texts are in the <a href="https://github.com/yashgix/capturedrift#data-and-licenses">README</a>.</p>
+  <p>The 40 session files come from 12 public, ungated Hugging Face datasets at fixed commits, under MIT, Apache-2.0, CC0-1.0 or CC-BY-4.0. Home-directory user names, email addresses, credential-shaped strings, third-party cookie values and URL signatures were redacted (pattern-based, so best effort), and <code>data/MANIFEST.json</code> records each file's source, sha256 and redaction counts. Dataset credits and license texts are in the <a href="https://github.com/yashgix/capturedrift#data-and-licenses">README</a>.</p>
   <p>The code is MIT licensed. This project is not affiliated with any tool or dataset named here.</p>
 </div></section>
 

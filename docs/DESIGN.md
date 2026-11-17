@@ -79,8 +79,8 @@ harness's first, in version order,
 
 - `new` is the set of keys that version's sessions contain and no earlier version contains;
 - `content` is the subset of `new` whose text bytes over that version *and every later version in the run* reach
-  200. That is the ground truth: a field that arrives and then carries real text for a while, which a frozen
-  parser would have been dropping.
+  200. That is the label, a proxy for real drift: a field that arrives and then carries real text for a while,
+  which a frozen parser would have been dropping.
 
 The window over later versions matters. A key that appears once and dies is noise; a key whose text arrives one
 version after the key itself appears is content, and it is counted as content on the version that introduced it,

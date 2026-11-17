@@ -1,12 +1,12 @@
 # capturedrift
 
-Detects silent data loss when coding-agent session logs from many Claude Code and Codex versions are captured into
+Measures silent data loss when coding-agent session logs from many Claude Code and Codex versions are captured into
 a standard trace schema. Write-up with charts: https://yashgix.github.io/capturedrift/
 
 An importer written against one CLI version keeps running on later versions, and it stops recognising whatever
 arrives in shapes it has never seen. Nothing fails: no exception, no dropped-file warning, no log line. The unknown
 keys are simply never read. capturedrift puts a number on that, on real public Claude Code and Codex session files
-(from public Hugging Face datasets, redacted) that span 22 and 4 CLI versions.
+(from public Hugging Face datasets, redacted) that span 22 Claude Code and 4 Codex versions.
 
 **Main result.** Loss is a range, from "not matched" to "not matched plus approximate copy", because the
 approximate-copy match is a heuristic. Shares are of held-out text.
@@ -75,8 +75,8 @@ The repository ships the pinned data; nothing is downloaded at test or run time.
 
 Raw Claude Code and Codex session files only — no converted, synthetic or re-wrapped exports, and no gated
 datasets. Per (harness, CLI version as recorded inside the file), the two sessions with the earliest first
-timestamp among files of at most 8 MB, ties broken by dataset then path. Copies of the same Fable 5 material use
-one original upload.
+timestamp among files of at most 8 MB, ties broken by dataset then path. Datasets that copy the same Fable 5
+traces count once, from the original upload.
 
 ### Redaction
 
@@ -85,14 +85,14 @@ upstream bytes, and credential-shaped text (API keys, `NAME_TOKEN=value` and the
 strings, re-encoding only the lines it changed. Dataset cards got the same credential pass. JSON structure is
 unchanged, and the per-rule counts are in the manifest. `tools/redact.py` then replaced third-party cookie values
 (Reddit, Cloudflare and GitHub cookies that sessions printed or received) and the signatures of signed download URLs
-with runs of `x` of the same length, so no browser or session identifier is republished and every file keeps its
-byte count and JSON structure. Some upstream datasets had already been anonymized by whoever published them;
-the data here is what was published, once redacted as above.
+with runs of `x` of the same length, so no third-party cookie value or URL signature is republished and every
+file keeps its byte count and JSON structure. Some upstream datasets had already been anonymized by whoever
+published them; the data here is what was published, once redacted as above.
 
 ## Running it
 
 ```bash
-make test         # unittest suite, own and acceptance tests (Python 3.14, no dependencies)
+make test         # unittest suite, unit and acceptance tests (Python 3.14, no dependencies)
 make lint         # ruff check and format check
 make data-check   # verify the pinned files against data/MANIFEST.json, no network
 make experiment   # rerun the v1 experiment into results/metrics.json
@@ -233,8 +233,7 @@ Path-based STS text share, which the held-out loss rows above are measured again
 
 The path-based STS share counts bytes at mapped keys. This table counts what `normalize` wrote.
 Reasoning removed subtracts the reasoning bytes. For Claude Code that equals what an earlier normalizer
-wrote when it read thinking text from the wrong field (checked against that code). Empty strings are left
-out of both sides.
+wrote when it read thinking text from the wrong field. Empty strings are left out of both sides.
 
 | Harness | Content bytes mapped | Written by normalize | Written / mapped | Reasoning removed (ablation) | Path-based STS bytes | Written content, share of bytes |
 |---|---|---|---|---|---|---|
@@ -344,8 +343,8 @@ SPEC-v2.md              what version 2 adds
   that data. Both break a frozen importer; this experiment cannot tell them apart.
 - **Heuristics.** The text rule (a string with at least three words) and the 200-byte content threshold are
   simple. Images and encrypted reasoning count as bytes, not text.
-- **Duplicated content.** Some dropped content appears elsewhere — Claude's `toolUseResult` repeats tool results
-  — so "dropped" is an upper bound on loss.
+- **Duplicated content.** Some unseen content appears elsewhere — Claude's `toolUseResult` repeats tool results
+  — so "unseen" is an upper bound on loss.
 - **STS share is by path.** The v1 STS byte and text shares count the leaves at mapped key paths. They do not
   measure what `normalize` writes, so a normalizer bug that read thinking text from the wrong field did not move
   them. The loss accounting counts what `normalize` writes, and a test fails if that drifts from what the mapping
